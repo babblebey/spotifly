@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.h_screen_fit {
+    @apply sm:h-[calc(100%_-_96px)];
+}
+.page {
+    @apply grow p-5 sm:overflow-x-auto sm:h-[calc(100%_-_96px)]
+}
+.w_inherit {
+    width: inherit;
+}
+.menu_list {
+    @apply space-y-5 my-5 px-5;
+} 
+.menu_list_item, 
+.menu_link p {
+    @apply whitespace-nowrap overflow-hidden text-ellipsis;
+}
+.menu_link {
+    @apply flex items-center text-white font-bold text-sm space-x-4 whitespace-nowrap overflow-hidden text-ellipsis opacity-70 hover:opacity-100;
+}
+.menu_link_icon_wrap {
+    @apply w-6 h-6 rounded-sm flex flex-none items-center justify-center;
+}
