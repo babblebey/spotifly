@@ -6,7 +6,7 @@
     @apply sm:h-[calc(100%_-_96px)];
 }
 .page {
-    @apply grow p-5 sm:overflow-x-auto sm:h-[calc(100%_-_96px)]
+    @apply grow p-5 sm:overflow-y-auto overflow-x-hidden sm:h-[calc(100%_-_96px)]
 }
 .w_inherit {
     width: inherit;
@@ -15,11 +15,12 @@
     @apply space-y-5 my-5 px-5;
 } 
 .menu_list_item, 
-.menu_link p {
+.menu_link p,
+.text_ellipsis {
     @apply whitespace-nowrap overflow-hidden text-ellipsis;
 }
 .menu_link {
-    @apply flex items-center text-white font-bold text-sm space-x-4 whitespace-nowrap overflow-hidden text-ellipsis opacity-70 hover:opacity-100;
+    @apply flex items-center text-white font-bold text-sm space-x-4 overflow-hidden opacity-70 hover:opacity-100;
 }
 .menu_link_icon_wrap {
     @apply w-6 h-6 rounded-sm flex flex-none items-center justify-center;
