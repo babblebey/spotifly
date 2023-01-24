@@ -8,3 +8,4 @@ export { default as ChevronRightIcon } from './ChevronRightIcon';
 export { default as ChevronLeftIcon } from './ChevronLeftIcon';
 export { default as UserIcon } from './UserIcon';
 export { default as PlayIcon } from './PlayIcon';
+export { default as CarretIcon } from './CarretIcon';
