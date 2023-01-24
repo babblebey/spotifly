@@ -4,3 +4,7 @@ export { default as HomeIcon } from './HomeIcon';
 export { default as LibraryIcon } from './LibraryIcon';
 export { default as PlusIcon } from './PlusIcon';
 export { default as SearchIcon } from './SearchIcon';
+export { default as ChevronRightIcon } from './ChevronRightIcon';
+export { default as ChevronLeftIcon } from './ChevronLeftIcon';
+export { default as UserIcon } from './UserIcon';
+export { default as PlayIcon } from './PlayIcon';
