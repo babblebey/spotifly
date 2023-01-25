@@ -6,7 +6,8 @@
     @apply sm:h-[calc(100%_-_96px)];
 }
 .page {
-    @apply grow p-5 sm:overflow-y-auto overflow-x-hidden sm:h-[calc(100%_-_96px)]
+    @apply grow sm:overflow-y-auto overflow-x-hidden;
+    /* sm:h-[calc(100%_-_96px)] */
 }
 .w_inherit {
     width: inherit;
@@ -14,7 +15,7 @@
 .menu_list {
     @apply space-y-5 my-5 px-5;
 } 
-.menu_list_item, 
+.menu_list_item,
 .menu_link p,
 .text_ellipsis {
     @apply whitespace-nowrap overflow-hidden text-ellipsis;
@@ -24,4 +25,10 @@
 }
 .menu_link_icon_wrap {
     @apply w-6 h-6 rounded-sm flex flex-none items-center justify-center;
+}
+.collection-list-item {
+    @apply h-10 px-4 rounded flex items-center;
+}
+.upgrade-btn {
+    @apply text-white text-sm font-bold border border-white border-opacity-30 hover:border-opacity-100 hover:scale-105 rounded-full h-8 px-3 flex items-center justify-center;
 }
