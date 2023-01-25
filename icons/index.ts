@@ -9,3 +9,6 @@ export { default as ChevronLeftIcon } from './ChevronLeftIcon';
 export { default as UserIcon } from './UserIcon';
 export { default as PlayIcon } from './PlayIcon';
 export { default as CarretIcon } from './CarretIcon';
+export { default as FacebookIcon } from './FacebookIcon';
+export { default as TwitterIcon } from './TwitterIcon';
+export { default as InstagramIcon } from './InstagramIcon';
