@@ -1,12 +1,12 @@
 import { FC } from "react";
 import { ChevronLeftIcon, ChevronRightIcon, PlayIcon, SearchIcon, UserIcon, CarretIcon } from "../icons";
 
-interface PageHeadProps {
+interface PageHeaderProps {
     variant: 'home' | 'search' | 'library' | 'playlist',
     isLoggedIn: boolean
 }
 
-const PageHead: FC<PageHeadProps> = ({ variant, isLoggedIn }) => {
+const PageHeader: FC<PageHeaderProps> = ({ variant, isLoggedIn }) => {
     return ( 
         <div className="flex items-center space-x-4 py-4 px-4 sm:px-8 h-16 w-full sticky top-0 left-0 bg-sdark-base bg-opacity-50">
             {/* Navigation */}
@@ -109,4 +109,4 @@ const PageHead: FC<PageHeadProps> = ({ variant, isLoggedIn }) => {
     );
 }
  
-export default PageHead;
+export default PageHeader;
