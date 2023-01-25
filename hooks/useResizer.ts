@@ -25,10 +25,7 @@ const useResizer = ({ resizer, sidebar, maxWidth, minWidth }: useResizerProps) =
             xCurrentPos = e.clientX - xInitialPos; // -> Calculate Current Position of Mouse on ClientX (x-axis)
             liveWidth  = initialWidth + xCurrentPos; // -> Calculate Live Width
 
-            console.log(e.clientX, xCurrentPos, initialWidth, liveWidth);
-
-            // console.log(liveWidth, { sidebar });
-
+            // Set Sidebar Width - With a Minimum with of 'minWidth' and Maximum of 'maxWidth'
             if (liveWidth < maxWidth && liveWidth > minWidth) {
                 sidebar.style.width = liveWidth + 'px';
             }
@@ -45,6 +42,7 @@ const useResizer = ({ resizer, sidebar, maxWidth, minWidth }: useResizerProps) =
         document.addEventListener('mouseup', mouseUpEventHandler);
     }
 
+    // Add Listener to Resizer Element
     resizer.addEventListener('mousedown', mouseDownEventHandler);
 }
  
