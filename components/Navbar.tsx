@@ -1,13 +1,13 @@
-import { FC, useEffect } from "react"
+import { FC, useEffect } from "react";
 import Image from "next/image";
 import { HomeIcon, SearchIcon, LibraryIcon, DownloadIcon, HeartIcon, PlusIcon } from "../icons";
 import useResizer, { useResizerProps } from "../hooks/useResizer";
 
 interface NavbarProps {
-  
+  isLoggedIn: boolean
 }
- 
-const Navbar: FC<NavbarProps> = () => {
+
+const Navbar: FC<NavbarProps> = ({ isLoggedIn }) => {
   useEffect(() => {
     // Setting Resizer Properties
     const resizerProps: useResizerProps = {
@@ -21,7 +21,7 @@ const Navbar: FC<NavbarProps> = () => {
     useResizer(resizerProps);
   }, [])
 
-  return ( 
+  return (
     <nav className="bg-black hidden sm:flex grow-0 w sm:w-[180px] md:w-[300px] relative select-none" id="sidebar">
       {/* Resizer */}
       <div className="absolute h-full w-2 z-30 right-0 top-0 hover:border-r hover:border-gray-400 hover:cursor-e-resize active:cursor-col-resize" id="resizer" />
@@ -80,21 +80,43 @@ const Navbar: FC<NavbarProps> = () => {
         </div>
 
         {/* Divider */}
-        <div className="px-5 py-3 opacity-30">
-          <hr />
-        </div>
+        {isLoggedIn && (
+          <div className="px-5 py-3"><hr className="border-sdark-subdued" /></div>
+        )}
 
         {/* Other Menu Part */}
         <div className="h-full w-full flex flex-col">
-          <div className={`${true && 'grow'} px-5 overflow-y-auto overflow-x-hidden text-white`}>
-            <ul className="space-y-2 overflow-hidden">
-              <li className="text_ellipsis">
-                <a href="" className="my-2 text-sm">Study lofi 📚</a>
-              </li>
-              <li className="text_ellipsis">
-                <a href="" className="my-2 text-sm">Atomic Habits</a>
-              </li>
-            </ul>
+          <div className={`${true && 'grow'} ${!isLoggedIn && 'flex items-end'} px-5 overflow-y-auto overflow-x-hidden text-swhite-subdued`}>
+            {isLoggedIn ? (
+              // Playlists - Render when user isLoggedIn
+              <ul className="space-y-2 overflow-hidden">
+                <li className="text_ellipsis">
+                  <a href="" className="my-2 text-sm">Study lofi 📚</a>
+                </li>
+                <li className="text_ellipsis">
+                  <a href="" className="my-2 text-sm">Atomic Habits</a>
+                </li>
+              </ul>
+            ) : (
+              // Quick links - Render when user (is not logged in) !isLoggedIn
+              <ul className="flex flex-wrap text-xs">
+                <li className="mr-5 mb-5">
+                  <a href="">Legal</a>
+                </li>
+                <li className="mr-5 mb-5">
+                  <a href="">Privacy Centre</a>
+                </li>
+                <li className="mr-5 mb-5">
+                  <a href="">Privacy Policy</a>
+                </li>
+                <li className="mr-5 mb-5">
+                  <a href="">Cookies</a>
+                </li>
+                <li className="mr-5 mb-5">
+                  <a href="">About Ads</a>
+                </li>
+              </ul>
+            )}
           </div>
 
           <div className={`${false && 'grow'}`}>
@@ -108,10 +130,9 @@ const Navbar: FC<NavbarProps> = () => {
             </ul>
           </div>
         </div>
-
       </div>
-    </nav>  
+    </nav>
   );
 }
- 
+
 export default Navbar;
