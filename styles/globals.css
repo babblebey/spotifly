@@ -32,3 +32,12 @@
 .upgrade-btn {
     @apply text-white text-sm font-bold border border-white border-opacity-30 hover:border-opacity-100 hover:scale-105 rounded-full h-8 px-3 flex items-center justify-center;
 }
+.play_button {
+    @apply bg-sgreen-100 rounded-full flex items-center justify-center hover:scale-105
+}
+footer a {
+    @apply hover:text-white hover:underline
+}
+.coll-list > * {
+    @apply col-span-1
+}
