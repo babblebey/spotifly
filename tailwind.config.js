@@ -19,6 +19,9 @@ module.exports = {
         sans: ['var(--font-circular)', ...fontFamily.sans]
       },
       colors: {
+        swhite: {
+          'subdued': '#a7a7a7'
+        },
         sgreen: {
           100: '#1ed760',
           200: '#169c46'
@@ -30,10 +33,14 @@ module.exports = {
           'base': '#121212',
           'highlight': '#1a1a1a',
           'el-base': '#181818',
-          'el-base-highlight': '#282828'
+          'el-base-highlight': '#282828',
+          'subdued': '#292929',
+          '53': '#535353'
         }
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/line-clamp')
+  ],
 }
