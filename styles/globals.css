@@ -35,6 +35,9 @@
 .play_button {
     @apply bg-sgreen-100 rounded-full flex items-center justify-center hover:scale-105
 }
+.play_button_hide_show {
+    @apply bg-sgreen-100 rounded-full items-center justify-center hover:scale-105 absolute bottom-0 right-0 m-2 hidden animate-slide-in-b group-hover:flex transition-transform duration-100
+}
 footer a {
     @apply hover:text-white hover:underline
 }
