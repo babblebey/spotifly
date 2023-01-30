@@ -1,4 +1,5 @@
 const { fontFamily } = require('tailwindcss/defaultTheme');
+const plugin = require('tailwindcss/plugin')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -56,9 +57,26 @@ module.exports = {
       animation: {
         "slide-in-b": "slide-in-bottom .3s ease-out",
       },
+      containers: {
+        'c3xl': '1800px',
+        'c2xl': '1600px',
+        'cxl': '1400px',
+        'clg': '1200px',
+        'cmd': '1000px',
+        'csm': '700px',
+        'cxs': '560px'
+      }
     },
   },
   plugins: [
-    require('@tailwindcss/line-clamp')
+    require('@tailwindcss/line-clamp'),
+    require('@tailwindcss/container-queries'),
+    
+    plugin(
+      // Specific NTH Child selector Modifier
+      function({ matchVariant }) {
+        matchVariant('nth', value => `&:nth-child(${value})`);
+      }
+    )    
   ],
 }
