@@ -6,8 +6,7 @@
     @apply sm:h-[calc(100%_-_96px)];
 }
 .page {
-    @apply grow sm:overflow-y-auto overflow-x-hidden;
-    /* sm:h-[calc(100%_-_96px)] */
+    @apply grow sm:overflow-y-auto overflow-x-hidden /* sm:h-[calc(100%_-_96px)] */;
 }
 .w_inherit {
     width: inherit;
@@ -33,14 +32,26 @@
     @apply text-white text-sm font-bold border border-white border-opacity-30 hover:border-opacity-100 hover:scale-105 rounded-full h-8 px-3 flex items-center justify-center;
 }
 .play_button {
-    @apply bg-sgreen-100 rounded-full flex items-center justify-center hover:scale-105
+    @apply bg-sgreen-100 rounded-full flex items-center justify-center hover:scale-105;
 }
 .play_button_hide_show {
-    @apply bg-sgreen-100 rounded-full items-center justify-center hover:scale-105 absolute bottom-0 right-0 m-2 hidden animate-slide-in-b group-hover:flex transition-transform duration-100
+    @apply bg-sgreen-100 rounded-full items-center justify-center hover:scale-105 absolute bottom-0 right-0 m-2 hidden animate-slide-in-b group-hover:flex transition-transform duration-100;
 }
 footer a {
-    @apply hover:text-white hover:underline
+    @apply hover:text-white hover:underline;
 }
-.coll-list > * {
-    @apply col-span-1
+.content {
+    @apply max-w-[1955px] p-8;
+}
+.playlist_card {
+    @apply w-full p-3 rounded space-y-3 bg-sdark-el-base hover:bg-sdark-el-base-highlight
+}
+.artist_card {
+    @apply w-full pt-3 pb-6 px-4 rounded space-y-3 bg-sdark-el-base hover:bg-sdark-el-base-highlight
+}
+.section .items {
+    @apply grid grid-cols-2 gap-x-6 @cxs/section:grid-cols-3 @csm/section:grid-cols-4 @cmd/section:grid-cols-5 @clg/section:grid-cols-6 @cxl/section:grid-cols-7 @c2xl/section:grid-cols-8 @c3xl/section:grid-cols-9
+}
+.section_item {
+    @apply hidden nth-[1]:block nth-[2]:block @cxs/section-items:nth-[3]:block @csm/section-items:nth-[4]:block @cmd/section-items:nth-[5]:block @clg/section-items:nth-[6]:block @cxl/section-items:nth-[7]:block @c2xl/section-items:nth-[8]:block @c3xl/section-items:nth-[9]:block
 }
