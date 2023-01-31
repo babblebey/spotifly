@@ -8,7 +8,7 @@ interface PageHeaderProps {
 
 const PageHeader: FC<PageHeaderProps> = ({ variant, isLoggedIn }) => {
     return ( 
-        <header className="flex items-center space-x-4 py-4 px-4 sm:px-8 h-16 w-full sticky top-0 left-0 bg-sdark-base">
+        <header className="flex items-center space-x-4 py-4 px-4 sm:px-8 h-16 w-full sticky z-30 top-0 left-0 bg-sdark-base">
             {/* Navigation */}
             <div className={`${(!isLoggedIn || variant === 'home') && 'grow'} flex space-x-4`}>
                 <button className="flex h-8 w-8 items-center justify-center bg-black rounded-full">
