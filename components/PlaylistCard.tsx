@@ -3,15 +3,15 @@ import { FC } from "react";
 import { PlayIcon } from "../icons";
 
 interface PlaylistCardProps {
-    
+    container?: boolean
 }
  
-const PlaylistCard: FC<PlaylistCardProps> = ( ) => {
+const PlaylistCard: FC<PlaylistCardProps> = ({ container }) => {
     return ( 
-        <div className="playlist_card group section_item">
+        <div className={`playlist_card group ${ container && 'section_item' }`}>
             <div className="relative rounded overflow-hidden">
                 <Image src={'/p4.jfif'} width={200} height={200} alt='title' className="w-full" />
-                <button className="play_button_hide_show h-12 w-12 shadow-lg shadow-sdark-53">
+                <button className="play_button_hide_show h-12 w-12 m-2 shadow-lg shadow-sdark-53">
                     <PlayIcon width={24} height={24} />
                 </button>
             </div>
