@@ -1,31 +1,35 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import ArtistCard from "./ArtistCard";
 
 interface ArtistSectionProps {
     title: string,
-    items?: object[]
+    items?: object[],
+    hideOverflow?: boolean,
+    showAll?: boolean
 }
  
-const ArtistSection: FC<ArtistSectionProps> = ({ title, items }) => {
+const ArtistSection: FC<ArtistSectionProps> = ({ title, items, hideOverflow, showAll }) => {
+    const [list, setList] = useState([1,2,3,4,5,6,7,8,9]);
+
     return ( 
-        <div className="space-y-5">
+        <div className="space-y-5 section @container/section">
             {/* Title Section */}
             <div className="flex items-center justify-between">
-                <a href="" className="text-white text-2xl font-bold hover:underline">
+                <a href="" className="_title hover:underline">
                     { title }
                 </a>
-                <a href="" className="text-swhite-subdued font-bold uppercase text-xs md:text-sm hover:underline">
-                    Show All
-                </a>
+                {showAll && (
+                    <a href="" className="_link">
+                        Show All
+                    </a>
+                )}
             </div>
 
             {/* Artist Items Section */}
-            <div className="flex justify-between flex-wrap">
-                <ArtistCard />
-                <ArtistCard />
-                <ArtistCard />
-                <ArtistCard />
-                <ArtistCard />
+            <div className={`items @container/section-items ${!hideOverflow && 'gap-y-6'}`}>
+                { list.map((i, l) => (
+                    <ArtistCard key={i} container={hideOverflow} />
+                )) }
             </div>
         </div>
      );
