@@ -7,7 +7,7 @@ interface PageFooterProps {
  
 const PageFooter: FC<PageFooterProps> = ({ isLoggedIn }) => {
     return ( 
-        <footer className="px-8 pt-8 bg-sdark-base">
+        <footer className="px-8 pt-8 mt-6 bg-sdark-base">
             {/* Navigations */}
             <div className="flex flex-col lg:flex-row justify-between text-swhite-subdued">
                 {/* Links */}
