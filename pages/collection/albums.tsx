@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import Head from "next/head";
 import PageFooter from "../../components/PageFooter";
 import PageHeader from "../../components/PageHeader";
-import PlaylistCard from "../../components/PlaylistCard";
+import PlaylistSection from "../../components/PlaylistSection";
 
 interface AlbumsProps {
     items: object[]
@@ -20,19 +20,7 @@ const Albums: NextPage<AlbumsProps> = ({ items }) => {
             <PageHeader variant="library" isLoggedIn />
 
             <main className="content">
-                <div className="space-y-5 section @container/section">
-                    <div className="flex items-center">
-                        <p className="_title">
-                            Albums
-                        </p>
-                    </div>
-
-                    <div className="items @container-normal gap-y-6">
-                        { list.map((i, l) => (
-                            <PlaylistCard key={i} />
-                        )) }
-                    </div>
-                </div>
+                <PlaylistSection title="Albums" />
             </main>
 
             <PageFooter isLoggedIn />
