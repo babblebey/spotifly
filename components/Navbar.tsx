@@ -24,7 +24,7 @@ const Navbar: FC<NavbarProps> = ({ isLoggedIn }) => {
   return (
     <nav className="bg-black hidden sm:flex grow-0 w sm:w-[180px] md:w-[300px] relative select-none" id="sidebar">
       {/* Resizer */}
-      <div className="absolute h-full w-2 z-30 right-0 top-0 hover:border-r hover:border-gray-400 hover:cursor-e-resize active:cursor-col-resize" id="resizer" />
+      <div className="absolute h-full w-2 z-30 right-0 top-0 hover:border-r hover:border-swhite-subdued hover:cursor-e-resize active:cursor-col-resize" id="resizer" />
 
       {/* Nav Body */}
       <div className="flex flex-col w_inherit">
