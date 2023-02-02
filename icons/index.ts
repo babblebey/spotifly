@@ -14,3 +14,7 @@ export { default as FacebookIcon } from './FacebookIcon';
 export { default as TwitterIcon } from './TwitterIcon';
 export { default as InstagramIcon } from './InstagramIcon';
 export { default as ThreeDotsIcon } from './ThreeDotsIcon';
+export { default as TimerIcon } from './TimerIcon';
+export { default as SpeakerIcon } from './SpeakerIcon';
+export { default as MicrophoneIcon } from './MicrophoneIcon';
+export { default as DeviceIcon } from './DeviceIcon';
