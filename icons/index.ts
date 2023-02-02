@@ -18,3 +18,4 @@ export { default as TimerIcon } from './TimerIcon';
 export { default as SpeakerIcon } from './SpeakerIcon';
 export { default as MicrophoneIcon } from './MicrophoneIcon';
 export { default as DeviceIcon } from './DeviceIcon';
+export { default as CancelIcon } from './CancelIcon';
