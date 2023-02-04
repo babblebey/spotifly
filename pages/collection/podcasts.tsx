@@ -20,16 +20,16 @@ const Podcasts: NextPage<PodcastsProps> = ({ items }) => {
 
             <PageHeader variant="library" isLoggedIn />
 
-            <main className="content">
-                <div className="space-y-5 section @container/section">
+            <main className="content @container">
+                <div className="space-y-5 section">
                     <div className="flex items-center">
                         <p className="_title">
                             Podcasts
                         </p>
                     </div>
 
-                    <div className="items @container-normal gap-y-6">
-                        <div className="library_card group bg-gradient-to-br from-[#00644e] to-[#27856a]">
+                    <div className="items gap-y-6">
+                        <div className="top_card group bg-gradient-to-br from-[#00644e] to-[#27856a]">
                             <div className="grow">
 
                             </div>

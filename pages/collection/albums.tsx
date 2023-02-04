@@ -19,7 +19,7 @@ const Albums: NextPage<AlbumsProps> = ({ items }) => {
 
             <PageHeader variant="library" isLoggedIn />
 
-            <main className="content">
+            <main className="content @container">
                 <PlaylistSection title="Albums" />
             </main>
 

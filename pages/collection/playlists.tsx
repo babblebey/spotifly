@@ -20,16 +20,16 @@ const Playlists: NextPage<PlaylistsProps> = ({ items }) => {
 
             <PageHeader variant="library" isLoggedIn />
 
-            <main className="content">
-                <div className="space-y-5 section @container/section">
+            <main className="content @container">
+                <div className="space-y-5 section">
                     <div className="flex items-center">
                         <p className="_title">
                             Playlists
                         </p>
                     </div>
 
-                    <div className="items @container-normal gap-y-6">
-                        <div className="library_card group bg-gradient-to-br from-[#450af5] to-[#8e8ee5]">
+                    <div className="items gap-y-6">
+                        <div className="top_card group bg-gradient-to-br from-[#450af5] to-[#8e8ee5]">
                             <div className="grow">
 
                             </div>

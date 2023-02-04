@@ -19,7 +19,7 @@ const Artists: NextPage<ArtistsProps> = ({ items }) => {
 
             <PageHeader variant="library" isLoggedIn />
 
-            <main className="content">
+            <main className="content @container">
                 <ArtistSection title="Artists" />
             </main>
 

@@ -21,18 +21,19 @@ const Search: NextPage<SearchProps> = ({}) => {
 
             <PageHeader variant="search" isLoggedIn />
 
-            <SearchHeader />
 
-            <main className="content">
+            <main className="@container">
+                <SearchHeader />
+
                 {false && (
-                    <div className="space-y-5 section @container/section">
+                    <div className="content_max_w_x_padded space-y-5 section">
                         <div className="flex items-center">
                             <p className="_title">
                                 Browse all
                             </p>
                         </div>
 
-                        <div className="items @container-normal gap-y-6">
+                        <div className="items gap-y-6">
                             { list.map((i, l) => (
                                 <BrowseCard num={i} />
                             )) }
