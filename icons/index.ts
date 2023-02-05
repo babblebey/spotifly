@@ -19,3 +19,4 @@ export { default as SpeakerIcon } from './SpeakerIcon';
 export { default as MicrophoneIcon } from './MicrophoneIcon';
 export { default as DeviceIcon } from './DeviceIcon';
 export { default as CancelIcon } from './CancelIcon';
+export { default as VerifyIcon } from './VerifyIcon';
