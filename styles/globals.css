@@ -37,11 +37,20 @@
 .play_button_hide_show {
     @apply bg-sgreen-100 rounded-full items-center justify-center hover:scale-105 absolute bottom-0 right-0 hidden animate-slide-in-b group-hover:flex transition-transform duration-100;
 }
+footer ul, footer button {
+    @apply relative
+}
 footer a {
     @apply hover:text-white hover:underline;
 }
 .content {
     @apply max-w-[1955px] px-4 sm:px-8 pb-8 pt-4;
+}
+.content_x_padded {
+    @apply px-4 sm:px-8
+}
+.content_max_w_x_padded {
+    @apply max-w-[1955px] px-4 sm:px-8
 }
 .playlist_card {
     @apply w-full p-3 rounded space-y-3 bg-sdark-el-base hover:bg-sdark-el-base-highlight
@@ -55,18 +64,21 @@ footer a {
 .section ._link {
     @apply text-swhite-subdued font-bold uppercase text-xs md:text-sm hover:underline
 }
-.section .items {
-    @apply grid grid-cols-2 gap-x-6 @cxs/section:grid-cols-3 @csm/section:grid-cols-4 @cmd/section:grid-cols-5 @clg/section:grid-cols-6 @cxl/section:grid-cols-7 @c2xl/section:grid-cols-8 @c3xl/section:grid-cols-9
+.section .items, .sgrid {
+    @apply grid grid-cols-2 gap-x-6 @cxs:grid-cols-3 @csm:grid-cols-4 @cmd:grid-cols-5 @clg:grid-cols-6 @cxl:grid-cols-7 @c2xl:grid-cols-8 @c3xl:grid-cols-9
 }
 .section .search_result_top {
-    @apply @cxs/section:grid-cols-3 @csm/section:grid-cols-4 @csm/section:gap-x-6 @csm/section:gap-y-0 @cmd/section:grid-cols-5 @clg/section:grid-cols-6 @cxl/section:grid-cols-7 @c2xl/section:grid-cols-8 @c3xl/section:grid-cols-9
+    @apply @cxs:grid-cols-3 @csm:grid-cols-4 @csm:gap-x-6 @csm:gap-y-0 @cmd:grid-cols-5 @clg:grid-cols-6 @cxl:grid-cols-7 @c2xl:grid-cols-8 @c3xl:grid-cols-9
 }
 .section .songs_search_result {
-    @apply col-span-2 @cxs/search-top:col-span-3 @csm/search-top:col-span-2 @cmd/search-top:col-span-3 @clg/search-top:col-span-4 @cxl/search-top:col-span-5 @c2xl/search-top:col-span-6 @c3xl/search-top:col-span-7
+    @apply col-span-2 @cxs:col-span-3 @csm:col-span-2 @cmd:col-span-3 @clg:col-span-4 @cxl:col-span-5 @c2xl:col-span-6 @c3xl:col-span-7
 }
 .section_item {
-    @apply hidden nth-[1]:block nth-[2]:block @cxs/section-items:nth-[3]:block @csm/section-items:nth-[4]:block @cmd/section-items:nth-[5]:block @clg/section-items:nth-[6]:block @cxl/section-items:nth-[7]:block @c2xl/section-items:nth-[8]:block @c3xl/section-items:nth-[9]:block
+    @apply hidden nth-[1]:block nth-[2]:block @cxs:nth-[3]:block @csm:nth-[4]:block @cmd:nth-[5]:block @clg:nth-[6]:block @cxl:nth-[7]:block @c2xl:nth-[8]:block @c3xl:nth-[9]:block
 }
 .top_card {
     @apply relative min-h-[230px] h-full rounded col-span-2 text-white p-5 flex flex-col
+}
+.grid-cols-slist > * {
+    @apply flex items-center
 }
