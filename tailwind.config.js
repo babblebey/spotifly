@@ -38,8 +38,11 @@ module.exports = {
           'subdued': '#292929',
           '53': '#535353'
         }
-      }
-      ,
+      },
+      gridTemplateColumns: {
+        'slist': '16px 6fr 4fr 3fr minmax(120px,1fr)',
+        'aslist': '16px 6fr 3fr minmax(120px, 1fr)'
+      },
       keyframes: {
         "slide-in-bottom": {
           "0%": {
