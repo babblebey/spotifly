@@ -10,10 +10,10 @@ interface SearchResultProps {
  
 const SearchResult: FC<SearchResultProps> = () => {
     return ( 
-        <div className="space-y-10">
+        <div className="content_max_w_x_padded pt-4 space-y-10">
             {/* Top Section */}
-            <div className="section @container/section">
-                <div className="grid grid-cols-2 gap-y-6 search_result_top @container/search-top">
+            <div className="section">
+                <div className="grid grid-cols-2 gap-y-6 search_result_top">
                     {/* Top Result */}
                     <div className="col-span-2 space-y-5">
                         <p className="_title">
@@ -44,15 +44,15 @@ const SearchResult: FC<SearchResultProps> = () => {
 
                     {/* Songs */}
                     <div className="songs_search_result space-y-5">
-                        <p className="_title">
+                        <h2 className="_title">
                             Songs
-                        </p>
+                        </h2>
 
                         <div>
-                            <SongListItem />
-                            <SongListItem />
-                            <SongListItem />
-                            <SongListItem />
+                            <SongListItem variant="search" />
+                            <SongListItem variant="search" />
+                            <SongListItem variant="search" />
+                            <SongListItem variant="search" />
                         </div>
                     </div>
                 </div>
