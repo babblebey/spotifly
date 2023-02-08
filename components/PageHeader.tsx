@@ -14,7 +14,7 @@ const PageHeader: FC<PageHeaderProps> = ({ variant, isLoggedIn }) => {
                 <button className="flex h-8 w-8 items-center justify-center bg-black rounded-full">
                     <ChevronLeftIcon width={16} height={16} />
                 </button>
-                <button className="hidden @cmd/header:flex h-8 w-8 items-center justify-center bg-black rounded-full disabled:opacity-30" disabled>
+                <button className="hidden @csm/header:flex h-8 w-8 items-center justify-center bg-black rounded-full disabled:opacity-30" disabled>
                     <ChevronRightIcon width={16} height={16} />
                 </button>
             </div>
@@ -62,14 +62,14 @@ const PageHeader: FC<PageHeaderProps> = ({ variant, isLoggedIn }) => {
             {/* Search Form */}
             {variant === 'search' && (
                 <div className={`${true && 'grow'}`}>
-                    <form action="" className="relative h-10 w-full @cmd/header:w-96 flex items-center">
+                    <form action="" className="relative h-10 w-full @csm/header:w-96 flex items-center">
                         <SearchIcon width={24} height={24} color="black" className="absolute left-3" />
                         <input 
                             type="text" 
                             placeholder="What do you want to listen to?"
                             className="rounded-full h-full w-full px-12 text-sm bg-white focus-visible:outline-none" 
                         />
-                        <CancelIcon width={24} height={24} color="black" className="absolute left-3" />
+                        <CancelIcon width={24} height={24} color="black" className="absolute right-3" />
                     </form>
                 </div>
             )}
