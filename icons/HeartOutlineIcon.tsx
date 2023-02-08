@@ -7,7 +7,7 @@ interface Props {
     className?: string
 }
  
-const HeartOulineIcon: FC<Props> = ({ height, width, color, className }) => {
+const HeartOutlineIcon: FC<Props> = ({ height, width, color, className }) => {
     return ( 
         <>
             <svg role="img" fill={color || '#fff'} height={height} width={width} aria-hidden="true" className={className} viewBox="0 0 16 16" data-encore-id="icon">
@@ -17,4 +17,4 @@ const HeartOulineIcon: FC<Props> = ({ height, width, color, className }) => {
     );
 }
  
-export default HeartOulineIcon;
+export default HeartOutlineIcon;
