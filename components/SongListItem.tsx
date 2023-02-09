@@ -3,31 +3,81 @@ import Image from "next/image";
 import { HeartOutlineIcon, PlayIcon, ThreeDotsIcon } from "../icons";
 
 interface SongListItemProps {
-    
+    index?: number,
+    variant: 'artist' | 'playlist' | 'search' | 'album' | 'track'
 }
  
-const SongListItem: FC<SongListItemProps> = () => {
-    return ( 
-        <div className="grid grid-cols-8 group hover:bg-sdark-el-base-highlight rounded select-none">
-            <div className="col-span-6 px-2 py-1 flex items-center">
-                <div className="relative w-10 h-10 mr-4">
-                    <Image src={'/m1.jfif'} width={60} height={60} alt="title" className="w-full" />
-                    <button className="hidden group-hover:block absolute w-full h-full top-0 bg-black bg-opacity-60">
-                        <PlayIcon color="white" width={20} height={20} className="m-auto" />
-                    </button>
-                </div>
+const SongListItem: FC<SongListItemProps> = ({ index, variant }) => {
+    const artist: boolean = variant === 'artist';
+    const playlist: boolean = variant === 'playlist';
+    const search: boolean = variant === 'search';
+    const album: boolean = variant === 'album';
+    const track: boolean = variant === 'track';
 
-                <div className="text-ellipsis">
-                    <p className="text-white text-ellipsis">
-                        Song Title
+    return ( 
+        <div className={`grid ${ search && 'grid-cols-8'} ${(artist || playlist || album) && 'gap-x-4 px-5 text-swhite-subdued text-sm py-1'} ${artist && 'grid-cols-aslist'} ${playlist && 'grid-cols-plist'} ${album && 'grid-cols-albslist'} group hover:bg-sdark-el-base-highlight rounded select-none`}>
+            {(playlist || artist || album) && (
+                <div className="w-full flex items-center">
+                    <p className="flex flex-col items-center justify-center">
+                        <span className="visible group-hover:invisible">
+                            { index }
+                        </span>
+                        <span className="absolute invisible group-hover:visible">
+                            <PlayIcon color="white" width={16} height={16} />
+                        </span>
                     </p>
-                    <a href="" className="text-swhite-subdued group-hover:text-white text-sm hover:underline">
-                        Artist
+                </div>
+            )}
+            
+            <div className={`${search && 'col-span-6 px-2'} py-1 flex items-center`}>
+                {!album && (
+                    <div className="relative w-10 h-10 mr-4">
+                        <Image src={'/m1.jfif'} width={60} height={60} alt="title" className="w-full" />
+                        {search && (
+                            <button className="hidden group-hover:block absolute w-full h-full top-0 bg-black bg-opacity-60">
+                                <PlayIcon color="white" width={20} height={20} className="m-auto" />
+                            </button>
+                        )}
+                    </div>
+                )}
+
+                <div className="text-ellipsis flex flex-col">
+                    <a href="" className={`${(album || artist) && 'font-bold text-base'} text-white text-ellipsis hover:underline`}>
+                        Song Title
                     </a>
+                    {!artist && (
+                        <a href="" className="text-swhite-subdued group-hover:text-white text-sm hover:underline">
+                            Artist
+                        </a>
+                    )}
                 </div>
             </div>
 
-            <div className="col-span-2 p-2 flex items-center justify-end text-swhite-subdued w-fit justify-self-end">
+            {artist && (
+                <div className="col-span-1 px-2 py-1 flex items-center">
+                    <p className="text-sm text-swhite-subdued group-hover:text-white ">
+                        1,111,000
+                    </p>
+                </div>
+            )}
+
+            {playlist && (
+                <div>
+                    <p>
+                        Album Name
+                    </p>
+                </div>
+            )}
+
+            {playlist && (
+                <div>
+                    <p>
+                        00-00-00
+                    </p>
+                </div>
+            )}
+
+            <div className={`${search && 'col-span-2'} p-2 flex items-center justify-end text-swhite-subdued w-fit justify-self-end`}>
                 <button className="mr-2 invisible group-hover:visible">
                     <HeartOutlineIcon color="#a7a7a7" width={16} height={16} />
                 </button>
