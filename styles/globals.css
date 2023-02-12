@@ -58,7 +58,7 @@ footer a {
 .artist_card {
     @apply w-full pt-3 pb-6 px-4 rounded space-y-3 bg-sdark-el-base hover:bg-sdark-el-base-highlight
 }
-.section ._title {
+.section ._title, ._title {
     @apply text-white text-2xl font-black
 }
 .section ._link {
@@ -81,4 +81,7 @@ footer a {
 }
 .grid-cols-slist > * {
     @apply flex items-center
+}
+.circle_before {
+    @apply pl-4 before:content-[''] before:h-2 before:w-2 before:absolute before:rounded-full before:left-0
 }
