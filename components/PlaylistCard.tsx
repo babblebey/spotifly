@@ -12,6 +12,8 @@ const PlaylistCard: FC<PlaylistCardProps> = ({ container, withPlayBtn }) => {
         <div className={`playlist_card group ${ container && 'section_item' }`}>
             <div className="relative rounded overflow-hidden">
                 <Image src={'/p4.jfif'} width={200} height={200} alt='title' className="w-full" />
+
+                {/* Renders when true */}
                 {withPlayBtn && (
                     <button className="play_button_hide_show h-12 w-12 m-2 shadow-lg shadow-sdark-53">
                         <PlayIcon width={24} height={24} />
