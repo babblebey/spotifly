@@ -17,7 +17,7 @@ const Artists: NextPage<ArtistsProps> = ({ items }) => {
                 <title>Spotifly - Your Library</title>
             </Head>
 
-            <PageHeader variant="library" isLoggedIn />
+            <PageHeader variant="library" isLoggedIn className="bg-transparent" />
 
             <main className="content @container">
                 <ArtistSection title="Artists" />

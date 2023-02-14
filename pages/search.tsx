@@ -19,14 +19,13 @@ const Search: NextPage<SearchProps> = ({}) => {
                 <title>Spotifly - Search</title>
             </Head>
 
-            <PageHeader variant="search" isLoggedIn />
-
+            <PageHeader variant="search" isLoggedIn className="bg-transparent" />
 
             <main className="@container">
                 <SearchHeader />
 
                 {false && (
-                    <div className="content_max_w_x_padded space-y-5 section">
+                    <div className="content_max_w_x_padded pt-4 space-y-5 section">
                         <div className="flex items-center">
                             <p className="_title">
                                 Browse all

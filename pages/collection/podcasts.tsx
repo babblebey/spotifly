@@ -18,7 +18,7 @@ const Podcasts: NextPage<PodcastsProps> = ({ items }) => {
                 <title>Spotifly - Your Library</title>
             </Head>
 
-            <PageHeader variant="library" isLoggedIn />
+            <PageHeader variant="library" isLoggedIn className="bg-transparent" />
 
             <main className="content @container">
                 <div className="space-y-5 section">
@@ -29,6 +29,7 @@ const Podcasts: NextPage<PodcastsProps> = ({ items }) => {
                     </div>
 
                     <div className="items gap-y-6">
+                        {/* Top Card */}
                         <div className="top_card group bg-gradient-to-br from-[#00644e] to-[#27856a]">
                             <div className="grow">
 
@@ -46,6 +47,7 @@ const Podcasts: NextPage<PodcastsProps> = ({ items }) => {
                             </button>
                         </div>
 
+                        {/* List */}
                         { list.map((i, l) => (
                             <PlaylistCard key={i} />
                         )) }
