@@ -36,7 +36,7 @@ const SearchResult: FC<SearchResultProps> = () => {
                                     Artist
                                 </button>
                             </div>
-                            <button className="play_button_hide_show h-12 w-12 m-4 shadow-lg shadow-sdark-base">
+                            <button className="play_button_hide_show bg-sgreen-100 h-12 w-12 m-4 shadow-lg shadow-sdark-base">
                                 <PlayIcon width={24} height={24} />
                             </button>
                         </div>

@@ -23,7 +23,7 @@ const EpisodeCard: FC<EpisodeCardProps> = () => {
                     </p>
                     <div className="flex items-centet justify-between pt-3 pb-2">
                         <div className="flex items-center space-x-5">
-                            <button className="play_button h-8 w-8">
+                            <button className="play_button bg-white h-8 w-8">
                                 <PlayIcon width={20} height={20} />
                             </button>
                             <p>

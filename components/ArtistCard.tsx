@@ -17,7 +17,7 @@ const ArtistCard: FC<ArtistCardProps> = ({ container, withPlayBtn }) => {
 
                 {/* Renders when true */}
                 {withPlayBtn && (
-                    <button className="play_button_hide_show h-12 w-12 m-2 shadow-lg shadow-sdark-el-base">
+                    <button className="play_button_hide_show bg-sgreen-100 h-12 w-12 m-2 shadow-lg shadow-sdark-el-base">
                         <PlayIcon width={24} height={24} />
                     </button>
                 )}

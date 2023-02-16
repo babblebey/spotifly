@@ -42,7 +42,7 @@ const Podcasts: NextPage<PodcastsProps> = ({ items }) => {
                                     9 episodes
                                 </p>
                             </div>
-                            <button className="play_button_hide_show h-12 w-12 m-4 shaodow-lg shadow-sdark-53">
+                            <button className="play_button_hide_show bg-sgreen-100 h-12 w-12 m-4 shaodow-lg shadow-sdark-53">
                                 <PlayIcon width={24} height={24} />
                             </button>
                         </div>
