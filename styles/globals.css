@@ -2,11 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+/* body {
+    @apply min-h-[500px];
+} */
 .h_screen_fit {
-    @apply sm:h-[calc(100%_-_96px)];
+    @apply sm:h-[calc(100%_-_90px)];
 }
 .page {
-    @apply grow sm:overflow-y-auto overflow-x-hidden /* sm:h-[calc(100%_-_96px)] */;
+    @apply grow sm:overflow-y-auto overflow-x-hidden sm:h-[calc(100%_-_90px)];
 }
 .w_inherit {
     width: inherit;
@@ -32,10 +35,10 @@
     @apply text-white text-sm font-bold border border-white border-opacity-30 hover:border-opacity-100 hover:scale-105 rounded-full h-8 px-3 flex items-center justify-center;
 }
 .play_button {
-    @apply bg-sgreen-100 rounded-full flex items-center justify-center hover:scale-105;
+    @apply rounded-full flex items-center justify-center hover:scale-105;
 }
 .play_button_hide_show {
-    @apply bg-sgreen-100 rounded-full items-center justify-center hover:scale-105 absolute bottom-0 right-0 hidden animate-slide-in-b group-hover:flex transition-transform duration-100;
+    @apply rounded-full items-center justify-center hover:scale-105 absolute bottom-0 right-0 hidden animate-slide-in-b group-hover:flex transition-transform duration-100;
 }
 footer ul, footer button {
     @apply relative
