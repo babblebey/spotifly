@@ -1,18 +1,18 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
-import { circular } from "../fonts"
-import Navbar from "../components/Navbar"
-import Player from "../components/Player"
+import "../styles/globals.css";
+import type { AppProps } from "next/app";
+import { circular } from "../fonts";
+import Navbar from "../components/Navbar";
+import Player from "../components/Player";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <main className={`${circular.variable} font-sans`}>
       <div className="sm:flex w-full sm:h-screen sm:overflow-hidden">
         {/* Navbar */}
-        <Navbar />
+        <Navbar isLoggedIn />
 
         {/* Pages Content */}
-        <div className="page">
+        <div className="page relative bg-sdark-base">
           <Component {...pageProps} />
         </div>
 

@@ -22,7 +22,7 @@ const Navbar: FC<NavbarProps> = ({ isLoggedIn }) => {
   }, [])
 
   return (
-    <nav className="bg-black hidden sm:flex grow-0 w sm:w-[180px] md:w-[300px] relative select-none" id="sidebar">
+    <nav className="bg-black hidden h_screen_fit sm:flex grow-0 w sm:w-[180px] md:w-[300px] relative select-none" id="sidebar">
       {/* Resizer */}
       <div className="absolute h-full w-2 z-30 right-0 top-0 hover:border-r hover:border-swhite-subdued hover:cursor-e-resize active:cursor-col-resize" id="resizer" />
 
@@ -120,7 +120,7 @@ const Navbar: FC<NavbarProps> = ({ isLoggedIn }) => {
           </div>
 
           <div className={`${false && 'grow'}`}>
-            <ul className="menu_list">
+            <ul className="my-2 px-5">
               <li className="menu_list_item">
                 <a href="" className={`menu_link`}>
                   <DownloadIcon color="white" width={24} height={24} className="flex-none" />
