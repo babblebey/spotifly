@@ -3,21 +3,30 @@ import ArtistCard from "./ArtistCard";
 
 interface ArtistSectionProps {
     title: string,
-    items?: object[],
+    subtitle?: string,
+    items?: any[],
     hideOverflow?: boolean,
-    showAll?: boolean
+    showAll?: boolean,
+    withPlayBtn?: boolean
 }
  
-const ArtistSection: FC<ArtistSectionProps> = ({ title, items, hideOverflow, showAll }) => {
+const ArtistSection: FC<ArtistSectionProps> = ({ title, subtitle, items, hideOverflow, showAll, withPlayBtn }) => {
     const [list, setList] = useState([1,2,3,4,5,6,7,8,9]);
 
     return ( 
         <div className="space-y-5 section @container/section">
             {/* Title Section */}
             <div className="flex items-center justify-between">
-                <a href="" className="_title hover:underline">
-                    { title }
-                </a>
+                <div>
+                    <a href="" className="block _title hover:underline">
+                        { title }
+                    </a>
+                    {subtitle && (
+                        <span className="text-sm text-swhite-subdued">
+                            { subtitle }
+                        </span>
+                    )}
+                </div>
                 {showAll && (
                     <a href="" className="_link">
                         Show All
@@ -27,8 +36,8 @@ const ArtistSection: FC<ArtistSectionProps> = ({ title, items, hideOverflow, sho
 
             {/* Artist Items Section */}
             <div className={`items @container/section-items ${!hideOverflow && 'gap-y-6'}`}>
-                { list.map((i, l) => (
-                    <ArtistCard key={i} container={hideOverflow} />
+                { items?.map((i, l) => (
+                    <ArtistCard key={i} container={hideOverflow} withPlayBtn={withPlayBtn} />
                 )) }
             </div>
         </div>
