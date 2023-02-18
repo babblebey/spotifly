@@ -4,7 +4,7 @@ import { HeartOutlineIcon, PlayIcon, ThreeDotsIcon } from "../icons";
 
 interface SongListItemProps {
     index?: number,
-    variant: 'artist' | 'playlist' | 'search' | 'album' | 'track'
+    variant: 'artist' | 'playlist' | 'search' | 'album' | 'track' | 'user'
 }
  
 const SongListItem: FC<SongListItemProps> = ({ index, variant }) => {
@@ -13,18 +13,19 @@ const SongListItem: FC<SongListItemProps> = ({ index, variant }) => {
     const search: boolean = variant === 'search';
     const album: boolean = variant === 'album';
     const track: boolean = variant === 'track';
+    const user: boolean = variant === 'user';
 
     return ( 
         <div className={
             `grid 
             ${ search && 'grid-cols-8'} 
-            ${(artist || playlist || album) && 'gap-x-4 px-5 text-swhite-subdued text-sm py-1'} 
-            ${artist && 'grid-cols-aslist'} ${playlist && 'grid-cols-plist'} 
+            ${(artist || playlist || album || user) && 'gap-x-4 px-5 text-swhite-subdued text-sm py-1'} 
+            ${(artist || user) && 'grid-cols-aslist'} ${playlist && 'grid-cols-plist'} 
             ${album && 'grid-cols-albslist'} 
             group hover:bg-sdark-el-base-highlight rounded select-none`
         }>
             {/* List Number - Renders for Stated Variant(s) */}
-            {(playlist || artist || album) && (
+            {(playlist || artist || album || user) && (
                 <div className="w-full flex items-center">
                     <p className="flex flex-col items-center justify-center">
                         <span className="visible group-hover:invisible">
@@ -51,7 +52,7 @@ const SongListItem: FC<SongListItemProps> = ({ index, variant }) => {
                 )}
 
                 <div className="text-ellipsis flex flex-col">
-                    <a href="" className={`${(album || artist) && 'font-bold text-base'} text-white text-ellipsis hover:underline`}>
+                    <a href="" className={`${(album || artist || user) && 'font-bold text-base'} text-white text-ellipsis hover:underline`}>
                         Song Title
                     </a>
 
@@ -74,18 +75,18 @@ const SongListItem: FC<SongListItemProps> = ({ index, variant }) => {
             )}
 
             {/* Album Name - Renders for Stated Variant(s) */}
-            {playlist && (
-                <div>
-                    <p>
-                        Album Name
+            {(playlist || user) && (
+                <div className="px-2 py-1 flex items-center">
+                    <p className="text-sm text-swhite-subdued group-hover:text-white ">
+                        Album name
                     </p>
                 </div>
             )}
 
             {/* Song Date - Renders for Stated Variant(s) */}
             {playlist && (
-                <div>
-                    <p>
+                <div className="px-2 py-1 flex items-center">
+                    <p className="text-sm text-swhite-subdued group-hover:text-white ">
                         00-00-00
                     </p>
                 </div>
