@@ -2,15 +2,22 @@ import { FC } from "react";
 import { ChevronLeftIcon, ChevronRightIcon, PlayIcon, SearchIcon, UserIcon, CarretIcon, CancelIcon } from "../icons";
 
 interface PageHeaderProps {
-    variant: 'home' | 'search' | 'library' | 'playlist',
-    isLoggedIn: boolean
+    variant: 'home' | 'search' | 'library' | 'playlist' | 'title',
+    isLoggedIn: boolean,
+    className?: string
 }
 
-const PageHeader: FC<PageHeaderProps> = ({ variant, isLoggedIn }) => {
+const PageHeader: FC<PageHeaderProps> = ({ variant, isLoggedIn, className }) => {
+    const home: boolean = variant === 'home';
+    const search: boolean = variant === 'search';
+    const library: boolean = variant === 'library';
+    const playlist: boolean = variant === 'playlist';
+    const title: boolean = variant === 'title';
+
     return ( 
-        <header className="@container/header flex items-center space-x-4 py-4 px-4 sm:px-8 h-16 w-full sticky z-30 top-0 left-0 bg-transparent">
+        <header className={`${ className } transition-colors duration-300 ease-in-out @container/header flex items-center space-x-4 py-4 px-4 sm:px-8 h-16 w-full sticky z-30 top-0 left-0`}>
             {/* Navigation */}
-            <div className={`${(!isLoggedIn || variant === 'home') && 'grow'} flex space-x-4`}>
+            <div className={`${(!isLoggedIn || home) && 'grow'} flex space-x-4`}>
                 <button className="flex h-8 w-8 items-center justify-center bg-black rounded-full">
                     <ChevronLeftIcon width={16} height={16} />
                 </button>
@@ -20,9 +27,9 @@ const PageHeader: FC<PageHeaderProps> = ({ variant, isLoggedIn }) => {
             </div>
 
             {/* Playlist - Play Button/Title  */}
-            {isLoggedIn && variant === 'playlist' && (
+            {isLoggedIn && playlist && (
                 <div className={`${true && 'grow'} text-white flex items-center space-x-4`}>
-                    <button className="play_button h-12 w-12">
+                    <button className="play_button bg-sgreen-100 h-12 w-12">
                         <PlayIcon width={28} height={24} />
                     </button>
                     <h2 className="text-2xl font-extrabold">
@@ -31,8 +38,17 @@ const PageHeader: FC<PageHeaderProps> = ({ variant, isLoggedIn }) => {
                 </div>
             )}
 
+            {/* Title */}
+            {isLoggedIn && title && (
+                <div className={`${true && 'grow'} text-white`}>
+                    <h2 className="text-2xl font-extrabold">
+                        Page title
+                    </h2>
+                </div>
+            )}
+
             {/* Library - Collection List */}
-            {isLoggedIn && variant === 'library' && (
+            {isLoggedIn && library && (
                 <div className={`${true && 'grow'}`}>
                     <ul className="flex items-center text-white font-bold text-sm">
                         <li className="collection-list-item">
@@ -60,7 +76,7 @@ const PageHeader: FC<PageHeaderProps> = ({ variant, isLoggedIn }) => {
             )}
 
             {/* Search Form */}
-            {variant === 'search' && (
+            {search && (
                 <div className={`${true && 'grow'}`}>
                     <form action="" className="relative h-10 w-full @csm/header:w-96 flex items-center">
                         <SearchIcon width={24} height={24} color="black" className="absolute left-3" />
@@ -75,7 +91,7 @@ const PageHeader: FC<PageHeaderProps> = ({ variant, isLoggedIn }) => {
             )}
 
             {/* Upgrade Button */}
-            {(isLoggedIn && variant === 'home' || variant === 'playlist') && (
+            {(isLoggedIn && (home || playlist || title)) && (
                 <div className="hidden @cxs/header:block">
                     <button className="upgrade-btn">
                         <p>Upgrade</p>
