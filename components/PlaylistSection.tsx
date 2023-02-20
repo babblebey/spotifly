@@ -11,8 +11,6 @@ interface PlaylistSectionProps {
 }
  
 const PlaylistSection: FC<PlaylistSectionProps> = ({ title, subtitle, items, hideOverflow, showAll, withPlayBtn }) => {
-    const list = [1,2,3,4,5,6,7,8,9];
-
     return ( 
         <div className="space-y-5 section @container/section">
             {/* Title Section */}
@@ -36,7 +34,7 @@ const PlaylistSection: FC<PlaylistSectionProps> = ({ title, subtitle, items, hid
 
             {/* Playlist Items Section */}
             <div className={`items @container/section-items ${!hideOverflow && 'gap-y-6'}`}>
-                { list.map((i, l) => (
+                { items?.map((i, l) => (
                     <PlaylistCard key={i} container={hideOverflow} withPlayBtn={withPlayBtn} />
                 )) }
             </div>
