@@ -19,6 +19,9 @@ module.exports = {
       fontFamily: {
         sans: ['var(--font-circular)', ...fontFamily.sans]
       },
+      fontSize: {
+        '2xs': '0.7rem',
+      },
       colors: {
         swhite: {
           'subdued': '#a7a7a7'
