@@ -1,13 +1,16 @@
 import { FC } from "react";
 import { ChevronLeftIcon, ChevronRightIcon, PlayIcon, SearchIcon, UserIcon, CarretIcon, CancelIcon } from "../icons";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 interface PageHeaderProps {
     variant: 'home' | 'search' | 'library' | 'playlist' | 'title',
-    isLoggedIn: boolean,
     className?: string
 }
 
-const PageHeader: FC<PageHeaderProps> = ({ variant, isLoggedIn, className }) => {
+const PageHeader: FC<PageHeaderProps> = ({ variant, className }) => {
+    const { status, data } = useSession();
+    const isLoggedIn: boolean = status === 'authenticated';
+
     const home: boolean = variant === 'home';
     const search: boolean = variant === 'search';
     const library: boolean = variant === 'library';
@@ -102,22 +105,28 @@ const PageHeader: FC<PageHeaderProps> = ({ variant, isLoggedIn, className }) => 
             {/* Profile Option or Authentication Option */}
             {isLoggedIn ? (
                 <div>
-                    <button className="flex items-center space-x-2 text-white text-sm font-bold rounded-full bg-black p-[2px] @csm/header:pr-2">
+                    <button className="flex items-center space-x-2 text-white text-sm font-bold rounded-full bg-black p-[2px] @csm/header:pr-2"
+                        onClick={() => signOut()}
+                    >
                         <div className="flex items-center h-7 w-7 justify-center rounded-full bg-sdark-53">
                             <UserIcon width={16} height={16} />
                         </div>
                         <p className="hidden @csm/header:block">
-                            Babblebey
+                            { data?.user?.name }
                         </p>
                         <CarretIcon width={16} height={16} className="hidden @csm/header:block" />
                     </button>
                 </div>
             ) : (
                 <div className="flex items-center space-x-6">
-                    <button className="text-swhite-subdued font-bold hover:text-white hover:scale-105">
+                    <button className="text-swhite-subdued font-bold hover:text-white hover:scale-105"
+                        onClick={() => signIn()}
+                    >
                         <p>Sign up</p>
                     </button>
-                    <button className="h-12 w-28 rounded-full bg-white text-black font-bold hover:scale-105 hover:bg-slate-50">
+                    <button className="h-12 w-28 rounded-full bg-white text-black font-bold hover:scale-105 hover:bg-slate-50"
+                        onClick={() => signIn()}
+                    >
                         <p>Log in</p>
                     </button>
                 </div>

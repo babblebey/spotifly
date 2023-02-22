@@ -2,12 +2,16 @@ import { FC, useEffect } from "react";
 import Image from "next/image";
 import { HomeIcon, SearchIcon, LibraryIcon, DownloadIcon, HeartIcon, PlusIcon } from "../icons";
 import useResizer, { useResizerProps } from "../hooks/useResizer";
+import { useSession } from "next-auth/react";
 
 interface NavbarProps {
-  isLoggedIn: boolean
+  
 }
 
-const Navbar: FC<NavbarProps> = ({ isLoggedIn }) => {
+const Navbar: FC<NavbarProps> = ({ }) => {
+  const { status } = useSession();
+  const isLoggedIn: boolean = status === "authenticated";
+
   useEffect(() => {
     // Setting Resizer Properties
     const resizerProps: useResizerProps = {

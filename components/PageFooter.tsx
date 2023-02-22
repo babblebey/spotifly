@@ -1,18 +1,22 @@
 import { FC } from "react";
 import { TwitterIcon, InstagramIcon, FacebookIcon } from "../icons";
+import { useSession } from "next-auth/react";
 
 interface PageFooterProps {
-    isLoggedIn: boolean
+    
 }
  
-const PageFooter: FC<PageFooterProps> = ({ isLoggedIn }) => {
+const PageFooter: FC<PageFooterProps> = ({ }) => {
+    const { status } = useSession();
+    const isLoggedIn: boolean = status === "authenticated";
+
     return ( 
-        <footer className="px-8 pt-8 mt-6 bg-sdark-base">
+        <footer className="@container/footer px-8 pt-8 mt-6 bg-sdark-base">
             {/* Navigations */}
-            <div className="flex flex-col lg:flex-row justify-between text-swhite-subdued">
+            <div className="flex flex-col @csm/footer:flex-row justify-between text-swhite-subdued">
                 {/* Links */}
-                <div className="w-full lg:w-6/12 flex flex-1 flex-wrap">
-                    <div className="w-36 md:w-52 mr-8 mb-8">
+                <div className="w-full @clg/footer:w-6/12 flex flex-1 flex-wrap">
+                    <div className="w-36 @cmd/footer:w-52 mr-8 mb-8">
                         <ul className="space-y-3">
                             <p className="font-bold text-white">Company</p>
                             <li>
@@ -26,7 +30,7 @@ const PageFooter: FC<PageFooterProps> = ({ isLoggedIn }) => {
                             </li>
                         </ul>
                     </div>
-                    <div className="w-36 md:w-52 mr-8 mb-8">
+                    <div className="w-36 @cmd/footer:w-52 mr-8 mb-8">
                         <ul className="space-y-3">
                             <p className="font-bold text-white">Communities</p>
                             <li>
@@ -46,7 +50,7 @@ const PageFooter: FC<PageFooterProps> = ({ isLoggedIn }) => {
                             </li>
                         </ul>
                     </div>
-                    <div className="w-36 md:w-52 mr-8 mb-8">
+                    <div className="w-36 @cmd/footer:w-52 mr-8 mb-8">
                         <ul className="space-y-3">
                             <p className="font-bold text-white">Useful links</p>
                             <li>
@@ -77,7 +81,7 @@ const PageFooter: FC<PageFooterProps> = ({ isLoggedIn }) => {
             <div className="w-full border-b border-sdark-subdued" />
 
             {/* Copyright */}
-            <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 text-[#a7a7a7] py-10 text-sm justify-between">
+            <div className="flex flex-col @csm/footer:flex-row space-y-4 @csm/footer:space-y-0 text-[#a7a7a7] py-10 text-sm justify-between">
                 {isLoggedIn && (
                     // Quick links - Render when user isLoggedIn
                     <ul className="flex space-x-4">
