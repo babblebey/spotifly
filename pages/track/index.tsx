@@ -20,7 +20,7 @@ const Track: NextPage<TrackProps> = ({}) => {
                 <title>Spotifly - Track name</title>
             </Head>
 
-            <PageHeader variant="playlist" isLoggedIn />
+            <PageHeader variant="playlist" />
 
             <main className="@container">
                 {/* Top Section */}
@@ -138,7 +138,7 @@ const Track: NextPage<TrackProps> = ({}) => {
                 </div>
             </main>
 
-            <PageFooter isLoggedIn />
+            <PageFooter />
         </div>
     )
 }

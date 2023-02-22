@@ -18,7 +18,7 @@ const Podcasts: NextPage<PodcastsProps> = ({ items }) => {
                 <title>Spotifly - Your Library</title>
             </Head>
 
-            <PageHeader variant="library" isLoggedIn className="bg-transparent" />
+            <PageHeader variant="library" className="bg-transparent" />
 
             <main className="content @container">
                 <div className="space-y-5 section">
@@ -55,7 +55,7 @@ const Podcasts: NextPage<PodcastsProps> = ({ items }) => {
                 </div>
             </main>
 
-            <PageFooter isLoggedIn />
+            <PageFooter />
         </div>    
     )
 }   

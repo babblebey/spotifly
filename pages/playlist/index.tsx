@@ -19,7 +19,7 @@ const Playlist: NextPage<PlaylistProps> = ({}) => {
                 <title>Spotifly - Playlist title</title>
             </Head>
 
-            <PageHeader variant="playlist" isLoggedIn className="bg-transparent" />
+            <PageHeader variant="playlist" className="bg-transparent" />
 
             <main className="@container -mt-24">
                 {/* Top Section */}
@@ -93,7 +93,7 @@ const Playlist: NextPage<PlaylistProps> = ({}) => {
                 </div>
             </main>
 
-            <PageFooter isLoggedIn />
+            <PageFooter />
         </div>
     )
 }

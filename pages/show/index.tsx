@@ -17,7 +17,7 @@ const Show: NextPage<ShowProps> = ({}) => {
                 <title>Spotifly - Podcast</title>
             </Head>  
 
-            <PageHeader variant="playlist" isLoggedIn className="bg-transparent" />
+            <PageHeader variant="playlist" className="bg-transparent" />
 
             <main className="@container -mt-24">
                 {/* Top Section */}
@@ -117,7 +117,7 @@ const Show: NextPage<ShowProps> = ({}) => {
                 </div>
             </main>
 
-            <PageFooter isLoggedIn />
+            <PageFooter />
         </div>
     )
 }

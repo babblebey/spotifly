@@ -31,7 +31,7 @@ const User: NextPage<UserProps> = ({}) => {
                 <title>Spotifly - User</title>
             </Head>
 
-            <PageHeader variant="title" isLoggedIn className={bgColor} />
+            <PageHeader variant="title" className={bgColor} />
 
             <main className="@container -mt-24">
                 {/* Top Section */}
@@ -100,7 +100,7 @@ const User: NextPage<UserProps> = ({}) => {
                 </div>
             </main>
 
-            <PageFooter isLoggedIn />
+            <PageFooter />
         </div>
     )
 }

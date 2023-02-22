@@ -16,7 +16,7 @@ const Episode: NextPage<EpisodeProps> = ({  }) => {
                 <title>Spotifly - Episode</title>
             </Head>
 
-            <PageHeader variant="playlist" isLoggedIn className="bg-transparent" />
+            <PageHeader variant="playlist" className="bg-transparent" />
 
             <main className="@container -mt-24">
                 {/* Top Section */}
@@ -104,7 +104,7 @@ const Episode: NextPage<EpisodeProps> = ({  }) => {
                 </div>
             </main>
 
-            <PageFooter isLoggedIn />   
+            <PageFooter />   
         </div>
     );
 }

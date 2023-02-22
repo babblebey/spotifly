@@ -19,7 +19,7 @@ const Search: NextPage<SearchProps> = ({}) => {
                 <title>Spotifly - Search</title>
             </Head>
 
-            <PageHeader variant="search" isLoggedIn className="bg-transparent" />
+            <PageHeader variant="search" className="bg-transparent" />
 
             <main className="@container">
                 <SearchHeader />
@@ -43,7 +43,7 @@ const Search: NextPage<SearchProps> = ({}) => {
                 <SearchResult />
             </main>
 
-            <PageFooter isLoggedIn />
+            <PageFooter />
         </div>
     )
 }   

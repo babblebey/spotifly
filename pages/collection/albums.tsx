@@ -17,13 +17,13 @@ const Albums: NextPage<AlbumsProps> = ({ items }) => {
                 <title>Spotifly - Your Library</title>
             </Head>
 
-            <PageHeader variant="library" isLoggedIn className="bg-transparent" />
+            <PageHeader variant="library" className="bg-transparent" />
 
             <main className="content @container">
                 <PlaylistSection title="Albums" />
             </main>
 
-            <PageFooter isLoggedIn />
+            <PageFooter />
         </div>    
     )
 }   
