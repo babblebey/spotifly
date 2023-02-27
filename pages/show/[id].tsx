@@ -1,16 +1,23 @@
-import { NextPage } from "next";
+import { GetServerSideProps, GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from "next";
+import { getToken } from "next-auth/jwt";
 import Head from "next/head";
 import Image from "next/image";
 import EpisodeCard from "../../components/EpisodeCard";
 import PageFooter from "../../components/PageFooter";
 import PageHeader from "../../components/PageHeader";
 import { ThreeDotsIcon, PlayIcon, ShareIcon, PlusCircleIcon } from "../../icons";
+import moment from "moment";
+import parse from "html-react-parser"
 
-interface ShowProps {
+import sampleData from "../../data/showData.json";
+import { GetShowResponse } from "../../types/spotify-api";
 
-}
+const Show: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    console.log(data)
 
-const Show: NextPage<ShowProps> = ({}) => {
+    const { id, name, publisher, description, html_description, episodes, images } = data as GetShowResponse;
+    const upNext = episodes.items[0];
+
     return (
         <div>
             <Head>
@@ -24,17 +31,17 @@ const Show: NextPage<ShowProps> = ({}) => {
                 <div className="content_x_padded bg-[#e00818] bg-opacity-60 pb-10 pt-32">
                     <div className="flex flex-col h-full self-align-end space-y-2 space-x-0 @csm:space-y-0 @csm:space-x-6 @csm:flex-row @csm:items-end">
                         <div className="w-fit mb-2 @csm:mb-0 @csm:w-72 shadow-lg shadow-black rounded-2xl overflow-hidden">
-                            <Image src={'/sh1.jfif'} width={280} height={280} className="object-contain" alt="title" />
+                            <Image src={ images[0].url } width={280} height={280} className="object-contain" alt="title" />
                         </div>
                         <div className="w-full text-white space-y-3">
                             <h2 className="font-bold uppercase text-xs">
                                 Podcast
                             </h2>
-                            <h2 className="text-4xl @cxs:text-6xl @cmd:text-8xl font-black">
-                                Podcast Title
+                            <h2 className="text-4xl @cxs:text-6xl @cmd:text-7xl font-black">
+                                { name }
                             </h2>
                             <p className="text-lg @cxs:text-xl @cmd:text-2xl font-black">
-                                Author
+                                { publisher }
                             </p>
                         </div>
                     </div>
@@ -59,10 +66,10 @@ const Show: NextPage<ShowProps> = ({}) => {
                         <div className="group h-fit bg-sdark-el-base-highlight bg-opacity-40 hover:bg-opacity-60 text-swhite-subdued p-4 -mx-2 @csm:-mx-4 rounded space-y-3 text-sm">
                             <p>Up next</p>
                             <a href="" className="text-white text-base block font-bold hover:underline relative circle_before before:bg-sblue before:translate-y-2">
-                                What's A Secret The Group Chat Doesn't Know About? | Ep 259 | ShxtnGigs Podcast
+                                { upNext.name }
                             </a>
                             <p className="line-clamp-2">
-                                For 20% Off + Free Shipping use code SNG at Manscaped.com This Week The Guys Discuss: 0:00, What's A Secret The Group Chat Doesn't Know About? 23:35, Intro 25:25, Fun Fact 32:40, Last Of Us 42:21, Trash News 44:50, Does Fuhad Miss James? 52:40, Babby Daddy Scammed Out Of $300 56:23, Tweets Of The Week. JOIN THE SHXTSNGIGS CULT BABIES PATREON https://www.patreon.com/shxtsngigs BRAND NEW SNG MERCH https://www.shxtsngigsstore.com/ Listen to SNG on: SPOTIFY https://open.spotify.com/show/6olvQhNhQwMbGG26t3rVgM?si=GvC4B1meTXWb8eMf4qTXAQ APPLE PODCASTS https://podcasts.apple.com/gb/podcast/shxtsngigs/id1481898329
+                                { upNext.description }
                             </p>
 
                             <div className="flex items-center justify-between pt-3 pb-2">
@@ -71,7 +78,13 @@ const Show: NextPage<ShowProps> = ({}) => {
                                         <PlayIcon width={20} height={20} />
                                     </button>
                                     <p>
-                                        <span>Feb 6</span> {' '} <span>1hr 1min</span>
+                                        <span>
+                                            { moment(upNext.release_date).format('MMM D') }    
+                                        </span> 
+                                        {' • '} 
+                                        <span>
+                                            { moment(upNext.duration_ms).format('mm') }
+                                        </span>
                                     </p>
                                 </div>
                                 <div className="flex items-center space-x-6 invisible group-hover:visible">
@@ -94,11 +107,9 @@ const Show: NextPage<ShowProps> = ({}) => {
                                 All Episodes
                             </h2>
 
-                            <EpisodeCard />
-                            <EpisodeCard />
-                            <EpisodeCard />
-                            <EpisodeCard />
-                            <EpisodeCard />
+                            { episodes.items.map((episode, i) => (
+                                <EpisodeCard key={i} data={ episode } />
+                            )) }
                         </div>
                     </div>
 
@@ -107,9 +118,9 @@ const Show: NextPage<ShowProps> = ({}) => {
                         <h2 className="_title">
                             About
                         </h2>
-                        <p className="text-swhite-subdued">
-                            ShxtsNGigs is a weekly podcast featuring best friends James and Fuhad. They try to give their full, unfiltered opinion on anything that comes to mind. It can be raw, it might be offensive but its always hilarious!
-                        </p>
+                        <div className="text-swhite-subdued">
+                            { parse(html_description) }
+                        </div>
                         <button className="text-white bg-sdark-el-base-highlight py-2 px-3 rounded-full text-sm">
                             Comedy
                         </button>
@@ -123,3 +134,16 @@ const Show: NextPage<ShowProps> = ({}) => {
 }
 
 export default Show
+
+export const getServerSideProps: GetServerSideProps = async ({ req, params }: GetServerSidePropsContext) => {
+    const secret = process.env.NEXTAUTH_SECRET;
+    const token = await getToken({ req, secret });
+    const headers = { 'Authorization': 'Bearer ' + token?.accessToken }
+
+    // const response = await fetch(`https://api.spotify.com/v1/shows/${params?.id}`, { headers })
+    // const data = await response.json();
+
+    return {
+        props: { data: sampleData }
+    }
+}
