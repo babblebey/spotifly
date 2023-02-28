@@ -1,22 +1,21 @@
 import { GetServerSideProps, NextPage, InferGetServerSidePropsType, GetServerSidePropsContext } from "next";
 import Head from "next/head";
+import Image from "next/image";
 import PageHeader from "../../components/PageHeader";
 import PageFooter from "../../components/PageFooter";
-import Image from "next/image";
-import { PlayIcon, ThreeDotsIcon, TimerIcon, HeartOutlineIcon } from "../../icons";
 import SongListItem from "../../components/SongListItem";
-import { getToken } from "next-auth/jwt";
-import sampleData from "../../data/playlistData.json";
-import { GetPlaylistResponse } from "../../types/spotify-api";
 import FormatNumber from "../../components/FormatNumber";
+import { PlayIcon, ThreeDotsIcon, TimerIcon, HeartOutlineIcon } from "../../icons";
+import { getToken } from "next-auth/jwt";
+import { GetPlaylistResponse } from "../../types/spotify-api";
+import { Item } from "../../types/spotify-api/GetPlaylistResponse";
+
+import sampleData from "../../data/playlistData.json";
 
 const Playlist: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const { id, name, description, images, followers, owner, tracks }: GetPlaylistResponse = data;
-    const { items, total } = tracks;
 
     console.log(data);
-
-    const list = [1,2,3,4,5,6,7,8,9,7,8,8,8]
 
     return (
         <div>
@@ -45,12 +44,16 @@ const Playlist: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServ
                             </p>
                             <p className="space-x-2">
                                 <span className="font-bold hover:underline">
-                                    <a href="">{ owner.display_name }</a>
+                                    <a href="">
+                                        { owner.display_name }
+                                    </a>
                                 </span>
                                 <span>
                                     <FormatNumber value={ followers.total } />
                                 </span>
-                                <span>{ total } Songs</span>
+                                <span>
+                                    { tracks.total } Songs
+                                </span>
                             </p>
                         </div>
                     </div>
@@ -97,7 +100,7 @@ const Playlist: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServ
 
                     {/* List */}
                     <div className="content_max_w_x_padded">
-                        {items.map((track, i: number) => (
+                        {tracks.items.map((track: Item, i: number) => (
                             <SongListItem key={i} data={ track } variant="playlist" index={i + 1} />
                         ))}
                     </div>
