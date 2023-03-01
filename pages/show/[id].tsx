@@ -1,5 +1,6 @@
 import { GetServerSideProps, GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from "next";
 import { getToken } from "next-auth/jwt";
+import { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import EpisodeCard from "../../components/EpisodeCard";
@@ -8,23 +9,37 @@ import PageHeader from "../../components/PageHeader";
 import { ThreeDotsIcon, PlayIcon, ShareIcon, PlusCircleIcon } from "../../icons";
 import moment from "moment";
 import parse from "html-react-parser"
+import { GetShowResponse } from "../../types/spotify-api";
+import Link from "next/link";
+import useScroll, { scrollData } from "../../hooks/useScroll";
 
 import sampleData from "../../data/showData.json";
-import { GetShowResponse } from "../../types/spotify-api";
 
 const Show: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    const initHeader = { displayTitle: false, bg: 'bg-transparent' }
+    const [header, setHeader] = useState(initHeader)
+
+    useEffect(() => {
+        useScroll({
+            element: document.querySelector('.page') as HTMLElement,
+            callback({ scrollTop }: scrollData) {
+                scrollTop > 250 ? setHeader({ displayTitle: true, bg: 'bg-[#8d0c15]' }) : setHeader(initHeader);
+            }
+        })
+    }, [])
+    
     console.log(data)
 
-    const { id, name, publisher, description, html_description, episodes, images } = data as GetShowResponse;
+    const { id, name, publisher, html_description, episodes, images } = data as GetShowResponse;
     const upNext = episodes.items[0];
 
     return (
         <div>
             <Head>
-                <title>Spotifly - Podcast</title>
+                <title>Spotifly - { name }</title>
             </Head>  
 
-            <PageHeader variant="playlist" className="bg-transparent" />
+            <PageHeader variant="title" title={ name } displayTitle={ header.displayTitle } className={ header.bg } />
 
             <main className="@container -mt-24">
                 {/* Top Section */}
@@ -65,9 +80,9 @@ const Show: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSi
                         {/* Next Episode */}
                         <div className="group h-fit bg-sdark-el-base-highlight bg-opacity-40 hover:bg-opacity-60 text-swhite-subdued p-4 -mx-2 @csm:-mx-4 rounded space-y-3 text-sm">
                             <p>Up next</p>
-                            <a href="" className="text-white text-base block font-bold hover:underline relative circle_before before:bg-sblue before:translate-y-2">
+                            <Link href={`/episode/${upNext.id}`} className="text-white text-base block font-bold hover:underline relative circle_before before:bg-sblue before:translate-y-2">
                                 { upNext.name }
-                            </a>
+                            </Link>
                             <p className="line-clamp-2">
                                 { upNext.description }
                             </p>

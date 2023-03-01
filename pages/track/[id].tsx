@@ -1,6 +1,8 @@
 import { GetServerSideProps, GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from 'next'
+import { useState, useEffect } from "react"
 import Head from "next/head"
 import Image from "next/image"
+import Link from "next/link"
 import PageFooter from "../../components/PageFooter"
 import PageHeader from "../../components/PageHeader"
 import SongListItem from "../../components/SongListItem"
@@ -9,6 +11,7 @@ import { PlayIcon, HeartOutlineIcon, ThreeDotsIcon } from "../../icons"
 import { getToken } from "next-auth/jwt"
 import { GetTrackResponse } from "../../types/spotify-api"
 import moment from "moment"
+import useScroll, { scrollData } from "../../hooks/useScroll"
 
 import sampleData from "../../data/trackData.json"
 
@@ -17,19 +20,31 @@ interface TrackProps {
 }
 
 const Track: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    const initHeader = { displayTitle: false, bg: 'bg-transparent' }
+    const [header, setHeader] = useState(initHeader)
+
+    useEffect(() => {
+        useScroll({
+            element: document.querySelector('.page') as HTMLElement,
+            callback({ scrollTop }: scrollData) {
+                scrollTop > 250 ? setHeader({ displayTitle: true, bg: 'bg-[#402878]' }) : setHeader(initHeader);
+            }
+        })
+    }, [])
+
     console.log(data)
 
-    const { name, artists, album, duration_ms } = data;
+    const { name, artists, album, duration_ms } = data as GetTrackResponse;
 
     const list = [1,2,3,4,5]
 
     return (
         <div>
             <Head>
-                <title>Spotifly - Track name</title>
+                <title>Spotifly - { name }</title>
             </Head>
 
-            <PageHeader variant="playlist" />
+            <PageHeader variant="playlist" title={ name } displayTitle={ header.displayTitle } className={ header.bg } />
 
             <main className="@container">
                 {/* Top Section */}
@@ -53,6 +68,7 @@ const Track: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerS
                                 <p>
                                     { moment(album.release_date).format('YYYY') }
                                 </p>
+                                {' • '} 
                                 <p>
                                     { moment(duration_ms).format('mm:ss') }
                                 </p>
@@ -99,9 +115,9 @@ const Track: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerS
                             <span className="text-sm text-swhite-subdued">
                                 Popular Tracks by
                             </span>
-                            <h3 className="_title">
+                            <Link href={`/artists/${artists[0].id}`} className="_title block">
                                 { artists[0].name }
-                            </h3>
+                            </Link>
                         </div>
 
                         <div>
@@ -132,9 +148,9 @@ const Track: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerS
                         </div>
                         <div className="text-white space-y-1">
                             <p className="text-xs">From the album</p>
-                            <a href="" className="font-bold hover:underline">
+                            <Link href={`/album/${album.id}`} className="font-bold hover:underline">
                                 { album.name }
-                            </a>
+                            </Link>
                         </div>
                     </div>
 
