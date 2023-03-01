@@ -1,26 +1,28 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import ArtistCard from "./ArtistCard";
+import Link from "next/link";
+import { Item as FollowedArtistItem } from "../types/spotify-api/GetFollowedArtistsResponse";
 
 interface ArtistSectionProps {
     title: string,
     subtitle?: string,
-    items?: any[],
+    items: FollowedArtistItem[],
     hideOverflow?: boolean,
-    showAll?: boolean,
+    showAll?: { link: boolean, route: string },
     withPlayBtn?: boolean
 }
  
 const ArtistSection: FC<ArtistSectionProps> = ({ title, subtitle, items, hideOverflow, showAll, withPlayBtn }) => {
-    const [list, setList] = useState([1,2,3,4,5,6,7,8,9]);
+    console.log(items)
 
     return ( 
         <div className="space-y-5 section @container/section">
             {/* Title Section */}
             <div className="flex items-center justify-between">
                 <div>
-                    <a href="" className="block _title hover:underline">
+                    <Link href={ showAll?.route || '' } className="block _title hover:underline">
                         { title }
-                    </a>
+                    </Link>
                     {subtitle && (
                         <span className="text-sm text-swhite-subdued">
                             { subtitle }
@@ -28,16 +30,16 @@ const ArtistSection: FC<ArtistSectionProps> = ({ title, subtitle, items, hideOve
                     )}
                 </div>
                 {showAll && (
-                    <a href="" className="_link">
+                    <Link href={ showAll?.route || '' }  className="_link">
                         Show All
-                    </a>
+                    </Link>
                 )}
             </div>
 
             {/* Artist Items Section */}
             <div className={`items @container/section-items ${!hideOverflow && 'gap-y-6'}`}>
-                { items?.map((i, l) => (
-                    <ArtistCard key={i} container={hideOverflow} withPlayBtn={withPlayBtn} />
+                { items?.map((item, i) => (
+                    <ArtistCard key={i} item={ item } container={hideOverflow} withPlayBtn={withPlayBtn} />
                 )) }
             </div>
         </div>
