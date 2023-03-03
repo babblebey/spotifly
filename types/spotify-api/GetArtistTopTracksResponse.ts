@@ -1,4 +1,8 @@
 export default interface GetArtistTopTracksResponse {
+    tracks: Track[];
+}
+
+export interface Track {
     album:         Album;
     artists:       Artist[];
     disc_number:   number;
@@ -14,7 +18,7 @@ export default interface GetArtistTopTracksResponse {
     popularity:    number;
     preview_url:   string;
     track_number:  number;
-    type:          GetArtistTopTracksResponseType;
+    type:          TrackType;
     uri:           string;
 }
 
@@ -70,4 +74,4 @@ export interface ExternalIds {
     isrc: string;
 }
 
-export type GetArtistTopTracksResponseType = "track";
+export type TrackType = "track";

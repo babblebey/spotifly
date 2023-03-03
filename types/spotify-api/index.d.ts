@@ -7,3 +7,5 @@ export { default as GetFollowedArtistsResponse } from "./GetFollowedArtistsRespo
 export { default as GetArtistResponse } from "./GetArtistResponse";
 export { default as GetArtistTopTracksResponse } from "./GetArtistTopTracksResponse";
 export { default as GetArtistAlbumsResponse } from "./GetArtistAlbumsResponse";
+export { default as GetArtistRelatedArtistsResponse } from "./GetArtistRelatedArtistsResponse";
+export { default as GetAlbumResponse } from "./GetAlbumResponse";

@@ -1,24 +1,11 @@
-export default interface GetFollowedArtistsResponse {
-    artists: Artists;
+export default interface GetArtistRelatedArtistsResponse {
+    artists: Artist[];
 }
 
-export interface Artists {
-    items:   Item[];
-    next:    null;
-    total:   number;
-    cursors: Cursors;
-    limit:   number;
-    href:    string;
-}
-
-export interface Cursors {
-    after: null;
-}
-
-export interface Item {
+export interface Artist {
     external_urls: ExternalUrls;
     followers:     Followers;
-    genres:        string[];
+    genres:        Genre[];
     href:          string;
     id:            string;
     images:        Image[];
@@ -36,6 +23,8 @@ export interface Followers {
     href:  null;
     total: number;
 }
+
+export type Genre = "lo-fi vgm" | "focus beats" | "otacore";
 
 export interface Image {
     height: number;
