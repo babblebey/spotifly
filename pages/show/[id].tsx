@@ -1,6 +1,5 @@
 import { GetServerSideProps, GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from "next";
 import { getToken } from "next-auth/jwt";
-import { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import EpisodeCard from "../../components/EpisodeCard";
@@ -11,23 +10,10 @@ import moment from "moment";
 import parse from "html-react-parser"
 import { GetShowResponse } from "../../types/spotify-api";
 import Link from "next/link";
-import useScroll, { scrollData } from "../../hooks/useScroll";
 
 import sampleData from "../../data/showData.json";
 
 const Show: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    const initHeader = { displayTitle: false, bg: 'bg-transparent' }
-    const [header, setHeader] = useState(initHeader)
-
-    useEffect(() => {
-        useScroll({
-            element: document.querySelector('.page') as HTMLElement,
-            callback({ scrollTop }: scrollData) {
-                scrollTop > 250 ? setHeader({ displayTitle: true, bg: 'bg-[#8d0c15]' }) : setHeader(initHeader);
-            }
-        })
-    }, [])
-    
     console.log(data)
 
     const { id, name, publisher, html_description, episodes, images } = data as GetShowResponse;
@@ -39,7 +25,7 @@ const Show: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSi
                 <title>Spotifly - { name }</title>
             </Head>  
 
-            <PageHeader variant="title" title={ name } displayTitle={ header.displayTitle } className={ header.bg } />
+            <PageHeader variant="title" title={ name }/>
 
             <main className="@container -mt-24">
                 {/* Top Section */}

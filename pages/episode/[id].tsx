@@ -1,32 +1,18 @@
 import { GetServerSideProps, GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from "next";
-import { useEffect, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import PageHeader from "../../components/PageHeader";
 import PageFooter from "../../components/PageFooter";
+import parse from "html-react-parser"
+import moment from "moment";
 import { ThreeDotsIcon, PlayIcon, PlusCircleIcon } from "../../icons";
 import { getToken } from "next-auth/jwt";
 import { GetEpisodeResponse } from "../../types/spotify-api";
-import parse from "html-react-parser"
-import moment from "moment";
-import useScroll, { scrollData } from "../../hooks/useScroll";
 
 import sampleData from "../../data/episodeData.json"
 
 const Episode: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    const initHeader = { displayTitle: false, bg: 'bg-transparent' }
-    const [header, setHeader] = useState(initHeader)
-
-    useEffect(() => {
-        useScroll({
-            element: document.querySelector('.page') as HTMLElement,
-            callback({ scrollTop }: scrollData) {
-                scrollTop > 250 ? setHeader({ displayTitle: true, bg: 'bg-[#8d0c15]' }) : setHeader(initHeader);
-            }
-        })
-    }, [])
-
     console.log(data)
 
     const { id, name, html_description, images, release_date, duration_ms, show } = data as GetEpisodeResponse;
@@ -37,7 +23,7 @@ const Episode: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServe
                 <title>Spotifly - { name }</title>
             </Head>
 
-            <PageHeader variant="title" title={ name } displayTitle={ header.displayTitle } className={ header.bg } />
+            <PageHeader variant="title" title={ name } />
 
             <main className="@container -mt-24">
                 {/* Top Section */}

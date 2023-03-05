@@ -1,5 +1,4 @@
 import { GetServerSideProps, GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from 'next'
-import { useState, useEffect } from "react"
 import Head from "next/head"
 import Image from "next/image"
 import Link from "next/link"
@@ -11,7 +10,6 @@ import { PlayIcon, HeartOutlineIcon, ThreeDotsIcon } from "../../icons"
 import { getToken } from "next-auth/jwt"
 import { GetTrackResponse } from "../../types/spotify-api"
 import moment from "moment"
-import useScroll, { scrollData } from "../../hooks/useScroll"
 
 import sampleData from "../../data/trackData.json"
 
@@ -20,23 +18,8 @@ interface TrackProps {
 }
 
 const Track: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    const initHeader = { displayTitle: false, bg: 'bg-transparent' }
-    const [header, setHeader] = useState(initHeader)
-
-    useEffect(() => {
-        useScroll({
-            element: document.querySelector('.page') as HTMLElement,
-            callback({ scrollTop }: scrollData) {
-                scrollTop > 250 ? setHeader({ displayTitle: true, bg: 'bg-[#402878]' }) : setHeader(initHeader);
-            }
-        })
-    }, [])
-
     console.log(data)
-
     const { name, artists, album, duration_ms } = data as GetTrackResponse;
-
-    const list = [1,2,3,4,5]
 
     return (
         <div>
@@ -44,11 +27,11 @@ const Track: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerS
                 <title>Spotifly - { name }</title>
             </Head>
 
-            <PageHeader variant="playlist" title={ name } displayTitle={ header.displayTitle } className={ header.bg } />
+            <PageHeader variant="playlist" title={ name } />
 
-            <main className="@container">
+            <main className="@container -mt-24">
                 {/* Top Section */}
-                <div className="content_x_padded bg-[#402878] bg-opacity-60 pb-10 pt-20">
+                <div className="content_x_padded bg-[#402878] bg-opacity-60 pb-10 pt-32">
                     <div className="flex flex-col h-full self-align-end space-y-2 space-x-0 @csm:space-y-0 @csm:space-x-6 @csm:flex-row @csm:items-end">
                         <div className="w-fit @csm:w-72 shadow-lg shadow-black">
                             <Image src={ album.images[0].url } width={280} height={280} className="object-contain" alt="title" />
@@ -60,15 +43,16 @@ const Track: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerS
                             <h3 className="text-4xl @cxs:text-6xl @cmd:text-8xl font-black">
                                 { name }
                             </h3>
-                            <div className="text-sm text-white flex items-center space-x-3">
+                            <div className="text-sm text-white flex items-center space-x-1">
                                 <div className="flex items-center space-x-1">
-                                    <Image src={'/ac1.jfif'} width={25} height={25} alt="title" className="rounded-full" />
+                                    <Image src={ album.images[0].url } width={25} height={25} alt="title" className="rounded-full" />
                                     <p className="font-bold">{ artists[0].name }</p>
                                 </div>
+                                <span>{'•'}</span> 
                                 <p>
                                     { moment(album.release_date).format('YYYY') }
                                 </p>
-                                {' • '} 
+                                <span>{'•'}</span> 
                                 <p>
                                     { moment(duration_ms).format('mm:ss') }
                                 </p>
@@ -180,7 +164,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, params }: Ge
     const headers = { 'Authorization': 'Bearer ' + token?.accessToken }
 
     // const response = await fetch(`https://api.spotify.com/v1/tracks/${params?.id}`, { headers });
-    // const data: GetTrackResponse = await response.json();
+    // const data = await response.json();
 
     // const responses = await Promise.all([
     //     fetch('https://jsonplaceholder.typicode.com/posts'),
