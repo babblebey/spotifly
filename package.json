@@ -10,10 +10,13 @@
     "@reduxjs/toolkit": "^1.9.1",
     "@tailwindcss/container-queries": "^0.1.0",
     "@tailwindcss/line-clamp": "^0.4.2",
+    "html-react-parser": "^3.0.9",
+    "moment": "^2.29.4",
     "next": "latest",
     "next-auth": "^4.19.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-palette": "^1.0.2",
     "react-redux": "^8.0.5"
   },
   "devDependencies": {
