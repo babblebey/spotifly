@@ -3,7 +3,7 @@
  * 
  * @see https://developer.spotify.com/documentation/web-api/reference/#/operations/get-track
 */
-export default interface GetPlaylistResponse {
+export default interface GetTrackResponse {
     album:             Album;
     artists:           Artist[];
     available_markets: string[];

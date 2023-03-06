@@ -22,6 +22,6 @@ export interface Followers {
 
 export interface Image {
     height: number | null;
-    url:    string | null;
+    url:    string;
     width:  number | null;
 }

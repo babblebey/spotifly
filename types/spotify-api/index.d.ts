@@ -1,4 +1,5 @@
 export { default as GetPlaylistResponse } from "./GetPlaylistResponse";
+export { default as GetCurrentUserPlaylistResponse } from "./GetCurrentUserPlaylistResponse";
 export { default as GetTrackResponse } from "./GetTrackResponse";
 export { default as GetShowResponse } from "./GetShowResponse";
 export { default as GetEpisodeResponse } from "./GetEpisodeResponse";
