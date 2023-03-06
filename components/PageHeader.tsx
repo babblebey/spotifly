@@ -1,26 +1,44 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon, PlayIcon, SearchIcon, UserIcon, CarretIcon, CancelIcon } from "../icons";
 import { signIn, signOut, useSession } from "next-auth/react";
+import useScroll, { scrollData } from "../hooks/useScroll";
 
 interface PageHeaderProps {
     variant: 'home' | 'search' | 'library' | 'playlist' | 'title',
-    className?: string
+    title?: string,
+    backgroundColor?: string
 }
 
-const PageHeader: FC<PageHeaderProps> = ({ variant, className }) => {
-    const { status, data } = useSession();
+const PageHeader: FC<PageHeaderProps> = ({ variant, title, backgroundColor }) => {
+    const { status, data } = useSession();    
     const isLoggedIn: boolean = status === 'authenticated';
+    
+    const session = useSession();
+    console.log(session);
 
-    const home: boolean = variant === 'home';
-    const search: boolean = variant === 'search';
-    const library: boolean = variant === 'library';
-    const playlist: boolean = variant === 'playlist';
-    const title: boolean = variant === 'title';
+    const [displayTitle, setDisplayTitle] = useState(false);
+
+    useEffect(() => {
+        useScroll({
+            element: document.querySelector('.page') as HTMLElement,
+            callback({ scrollTop }: scrollData) {
+                scrollTop > 300 ? setDisplayTitle(true) : setDisplayTitle(false)
+            }
+        })
+    }, [])
+
+    const homeVariant: boolean = variant === 'home';
+    const searchVariant: boolean = variant === 'search';
+    const libraryVariant: boolean = variant === 'library';
+    const playlistVariant: boolean = variant === 'playlist';
+    const titleVariant: boolean = variant === 'title';
 
     return ( 
-        <header className={`${ className } transition-colors duration-300 ease-in-out @container/header flex items-center space-x-4 py-4 px-4 sm:px-8 h-16 w-full sticky z-30 top-0 left-0`}>
+        <header className="transition-colors duration-300 ease-in-out @container/header flex items-center space-x-4 py-4 px-4 sm:px-8 h-16 w-full sticky z-30 top-0 left-0"
+            style={{ backgroundColor: displayTitle ? backgroundColor : 'transparent' }}
+        >
             {/* Navigation */}
-            <div className={`${(!isLoggedIn || home) && 'grow'} flex space-x-4`}>
+            <div className={`${(!isLoggedIn || homeVariant) && 'grow'} flex space-x-4`}>
                 <button className="flex h-8 w-8 items-center justify-center bg-black rounded-full">
                     <ChevronLeftIcon width={16} height={16} />
                 </button>
@@ -30,28 +48,34 @@ const PageHeader: FC<PageHeaderProps> = ({ variant, className }) => {
             </div>
 
             {/* Playlist - Play Button/Title  */}
-            {isLoggedIn && playlist && (
+            {isLoggedIn && playlistVariant && (
                 <div className={`${true && 'grow'} text-white flex items-center space-x-4`}>
-                    <button className="play_button bg-sgreen-100 h-12 w-12">
-                        <PlayIcon width={28} height={24} />
-                    </button>
-                    <h2 className="text-2xl font-extrabold">
-                        Study lofi 📚
-                    </h2>
+                    { displayTitle && (
+                        <>
+                            <button className="play_button bg-sgreen-100 h-12 w-12">
+                                <PlayIcon width={28} height={24} />
+                            </button>
+                            <h2 className="hidden @csm/header:block text-2xl font-extrabold transition-display ease-in duration-100">
+                                { title }
+                            </h2>
+                        </>
+                    ) }
                 </div>
             )}
 
             {/* Title */}
-            {isLoggedIn && title && (
+            {isLoggedIn && titleVariant && (
                 <div className={`${true && 'grow'} text-white`}>
-                    <h2 className="text-2xl font-extrabold">
-                        Page title
-                    </h2>
+                    { displayTitle && (
+                        <h2 className="hidden @csm/header:block text-2xl font-extrabold transition-display ease-in duration-100">
+                            { title }
+                        </h2>
+                    ) }
                 </div>
             )}
 
             {/* Library - Collection List */}
-            {isLoggedIn && library && (
+            {isLoggedIn && libraryVariant && (
                 <div className={`${true && 'grow'}`}>
                     <ul className="flex items-center text-white font-bold text-sm">
                         <li className="collection-list-item">
@@ -79,7 +103,7 @@ const PageHeader: FC<PageHeaderProps> = ({ variant, className }) => {
             )}
 
             {/* Search Form */}
-            {search && (
+            {searchVariant && (
                 <div className={`${true && 'grow'}`}>
                     <form action="" className="relative h-10 w-full @csm/header:w-96 flex items-center">
                         <SearchIcon width={24} height={24} color="black" className="absolute left-3" />
@@ -94,7 +118,7 @@ const PageHeader: FC<PageHeaderProps> = ({ variant, className }) => {
             )}
 
             {/* Upgrade Button */}
-            {(isLoggedIn && (home || playlist || title)) && (
+            {(isLoggedIn && (homeVariant || playlistVariant || titleVariant)) && (
                 <div className="hidden @cxs/header:block">
                     <button className="upgrade-btn">
                         <p>Upgrade</p>
