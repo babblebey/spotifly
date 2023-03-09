@@ -3,14 +3,24 @@ import Image from "next/image";
 import { HomeIcon, SearchIcon, LibraryIcon, DownloadIcon, HeartIcon, PlusIcon } from "../icons";
 import useResizer, { useResizerProps } from "../hooks/useResizer";
 import { useSession } from "next-auth/react";
+import { GetServerSideProps, GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
+import { getToken } from "next-auth/jwt";
+
+import sampleData from "../data/navbarUserPlaylistData.json"
+import { GetCurrentUserPlaylistResponse } from "../types/spotify-api";
+import Link from "next/link";
 
 interface NavbarProps {
   
 }
 
-const Navbar: FC<NavbarProps> = ({ }) => {
+const Navbar: FC<NavbarProps> = ( ) => {
   const { status } = useSession();
   const isLoggedIn: boolean = status === "authenticated";
+
+  // console.log(data)
+
+  const { items: playlistItems } = sampleData as GetCurrentUserPlaylistResponse;
 
   useEffect(() => {
     // Setting Resizer Properties
@@ -31,7 +41,7 @@ const Navbar: FC<NavbarProps> = ({ }) => {
       <div className="absolute h-full w-2 z-30 right-0 top-0 hover:border-r hover:border-swhite-subdued hover:cursor-e-resize active:cursor-col-resize" id="resizer" />
 
       {/* Nav Body */}
-      <div className="flex flex-col w_inherit">
+      <div className="relative flex flex-col w_inherit">
         {/* Logo Area */}
         <div className="p-5">
           <Image src="/spotifly-w.svg" height={40} width={131} className="object-contain" alt="Spotifly" />
@@ -89,21 +99,24 @@ const Navbar: FC<NavbarProps> = ({ }) => {
         )}
 
         {/* Other Menu Part */}
-        <div className="h-full w-full flex flex-col">
-          <div className={`${true && 'grow'} ${!isLoggedIn && 'flex items-end'} px-5 overflow-y-auto overflow-x-hidden text-swhite-subdued`}>
+        <div className="h-full w-full flex flex-col overflow-y-auto pb-[3rem]">
+          <div className={`${true && 'grow'} h-full ${!isLoggedIn && 'flex items-end'} px-5 overflow-y-auto overflow-x-hidden text-swhite-subdued`}>
             {isLoggedIn ? (
               // Playlists - Render when user isLoggedIn
               <ul className="space-y-2 overflow-hidden">
-                <li className="text_ellipsis">
-                  <a href="" className="my-2 text-sm">Study lofi 📚</a>
-                </li>
-                <li className="text_ellipsis">
-                  <a href="" className="my-2 text-sm">Atomic Habits</a>
-                </li>
+
+                { playlistItems.map((item, i) => (
+                   <li key={i} className="text_ellipsis">
+                    <Link href={`/playlist/${ item.id }`} className="my-2 text-sm">
+                      { item.name }
+                    </Link>
+                  </li>
+                )) }
+
               </ul>
             ) : (
               // Quick links - Render when user (is not logged in) !isLoggedIn
-              <ul className="flex flex-wrap text-xs">
+              <ul className="flex flex-wrap text-xs pb-4">
                 <li className="mr-5 mb-5">
                   <a href="">Legal</a>
                 </li>
@@ -123,16 +136,16 @@ const Navbar: FC<NavbarProps> = ({ }) => {
             )}
           </div>
 
-          <div className={`${false && 'grow'}`}>
-            <ul className="my-2 px-5">
-              <li className="menu_list_item">
-                <a href="" className={`menu_link`}>
-                  <DownloadIcon color="white" width={24} height={24} className="flex-none" />
-                  <p>Install App</p>
-                </a>
-              </li>
-            </ul>
-          </div>
+        </div>
+        <div className={`${false && 'grow'} absolute bottom-0 w-full z-10 bg-black`}>
+          <ul className="my-2 px-5">
+            <li className="menu_list_item">
+              <a href="" className={`menu_link`}>
+                <DownloadIcon color="white" width={24} height={24} className="flex-none" />
+                <p>Install App</p>
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
     </nav>
