@@ -12,26 +12,31 @@ interface PageHeaderProps {
 const PageHeader: FC<PageHeaderProps> = ({ variant, title, backgroundColor }) => {
     const { status, data } = useSession();    
     const isLoggedIn: boolean = status === 'authenticated';
-    
-    const session = useSession();
-    console.log(session);
-
     const [displayTitle, setDisplayTitle] = useState(false);
 
-    useEffect(() => {
-        useScroll({
-            element: document.querySelector('.page') as HTMLElement,
-            callback({ scrollTop }: scrollData) {
-                scrollTop > 300 ? setDisplayTitle(true) : setDisplayTitle(false)
-            }
-        })
-    }, [])
-
+    const session = useSession();
+    
     const homeVariant: boolean = variant === 'home';
     const searchVariant: boolean = variant === 'search';
     const libraryVariant: boolean = variant === 'library';
     const playlistVariant: boolean = variant === 'playlist';
     const titleVariant: boolean = variant === 'title';
+
+    console.log(session);    
+
+    useEffect(() => {
+        useScroll({
+            element: document.querySelector('.page') as HTMLElement,
+            callback({ scrollTop }: scrollData) {
+                if (libraryVariant) {
+                    scrollTop > 50 ? setDisplayTitle(true) : setDisplayTitle(false)
+                } else {
+                    scrollTop > 300 ? setDisplayTitle(true) : setDisplayTitle(false)
+                }
+            }
+        })
+    }, [])
+
 
     return ( 
         <header className="transition-colors duration-300 ease-in-out @container/header flex items-center space-x-4 py-4 px-4 sm:px-8 h-16 w-full sticky z-30 top-0 left-0"
