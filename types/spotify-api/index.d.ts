@@ -4,6 +4,7 @@ export { default as GetTrackResponse } from "./GetTrackResponse";
 export { default as GetShowResponse } from "./GetShowResponse";
 export { default as GetEpisodeResponse } from "./GetEpisodeResponse";
 export { default as GetUserResponse } from "./GetUserResponse";
+export { default as GetUsersSavedAlbumsResponse } from "./GetUsersSavedAlbumsResponse";
 export { default as GetFollowedArtistsResponse } from "./GetFollowedArtistsResponse";
 export { default as GetArtistResponse } from "./GetArtistResponse";
 export { default as GetArtistTopTracksResponse } from "./GetArtistTopTracksResponse";
