@@ -29,3 +29,4 @@ export { default as RepeatIcon } from './RepeatIcon';
 export { default as PictureInPictureIcon } from './PictureInPictureIcon';
 export { default as QueueIcon } from './QueueIcon';
 export { default as MusicNoteIcon } from './MusicNoteIcon';
+export { default as BookmarkIcon } from './BookmarkIcon';
