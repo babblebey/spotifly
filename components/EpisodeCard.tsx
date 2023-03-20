@@ -1,25 +1,38 @@
 import { FC } from "react";
 import Image from "next/image";
 import { ThreeDotsIcon, PlayIcon, PlusCircleIcon, ShareIcon } from "../icons";
+import { Item as GetShowResponseItem } from "../types/spotify-api/GetShowResponse";
+import { Episode as GetUsersSavedEpisodesResponseItem } from "../types/spotify-api/GetUsersSavedEpisodesResponse";
+import moment from "moment";
 
 interface EpisodeCardProps {
-    
+    data: GetShowResponseItem | GetUsersSavedEpisodesResponseItem
 }
  
-const EpisodeCard: FC<EpisodeCardProps> = () => {
+const EpisodeCard: FC<EpisodeCardProps> = ({ data }) => {
+    console.log(data);
+    
+    const { id, name, description, images, release_date, duration_ms } = data;
+    const { show } = data as GetUsersSavedEpisodesResponseItem;
+
     return ( 
         <>
             <hr className="border-t-2 border-sdark-el-base-highlight"/>
             <div className="group flex px-4 -mx-2 @cmd:-mx-4 py-5 -my-1 space-x-5 rounded-md text-swhite-subdued hover:bg-sdark-el-base-highlight">
                 <div className="w-3/12 @csm:w-28 @cmd:h-28">
-                    <Image src={'/sh1.jfif'} width={150} height={150} alt="title" className="object-contain rounded-xl" />
+                    <Image src={ images[0].url } width={150} height={150} alt="title" className="object-contain rounded-xl" />
                 </div>
                 <div className="w-9/12 @csm:w-full space-y-2">
-                    <a href="" className="font-bold text-base text-white hover:underline relative circle_before before:bg-sblue before:translate-y-2">
-                        What's A Secret The Group Chat Doesn't Know About? | Ep 258 | ShxtnGigs Podcast
+                    <a href="" className="font-bold text-base text-white hover:underline block relative">
+                        { name }
                     </a>
+                    { show && (
+                        <a href={`show/${show?.id}`} className="font-bold text-base text-white hover:underline relative">
+                            { show.name }
+                        </a>
+                    ) }
                     <p className="line-clamp-2">
-                        What's A Secret The Group Chat Doesn't Know About? 23:35, Intro 25:25, Fun Fact 32:40, Last Of Us 42:21, Trash News 44:50, Does Fuhad Miss James? 52:40, Babby Daddy Scammed Out Of $300 56:23, Tweets Of The Week. JOIN THE SHXTSNGIGS CULT BABIES PATREON https://www.patreon.com/shxtsngigs BRAND NEW SNG MERCH https://www.shxtsngigsstore.com/ Listen to SNG on: SPOTIFY https://open.spotify.com/show/6olvQhNhQwMbGG26t3rVgM?si=GvC4B1meTXWb8eMf4qTXAQ APPLE PODCASTS https://podcasts.apple.com/gb/podcast/shxtsngigs/id1481898329
+                        { description }
                     </p>
                     <div className="flex items-centet justify-between pt-3 pb-2">
                         <div className="flex items-center space-x-5">
@@ -27,7 +40,13 @@ const EpisodeCard: FC<EpisodeCardProps> = () => {
                                 <PlayIcon width={20} height={20} />
                             </button>
                             <p>
-                                <span>Feb 6</span> {' '} <span>1hr 1min</span>
+                                <span>
+                                    { moment(release_date).format('MMM D') }    
+                                </span> 
+                                {' • '} 
+                                <span>
+                                    { moment(duration_ms).format('mm') }
+                                </span>
                             </p>
                         </div>
                         <div className="flex items-center space-x-6 invisible group-hover:visible">

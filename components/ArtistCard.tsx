@@ -1,18 +1,21 @@
 import Image from "next/image";
+import Link from "next/link";
 import { FC } from "react"
 import { PlayIcon } from "../icons";
+import { Item as FollowedArtistsItem } from "../types/spotify-api/GetFollowedArtistsResponse";
 
 interface ArtistCardProps {
+    item: FollowedArtistsItem
     container?: boolean
     withPlayBtn?: boolean
 }
  
-const ArtistCard: FC<ArtistCardProps> = ({ container, withPlayBtn }) => {
+const ArtistCard: FC<ArtistCardProps> = ({ item, container, withPlayBtn }) => {
     return ( 
         <div className={`artist_card group ${ container && 'section_item' }`}>
             <div className="relative">
-                <Image src={'/a1.jfif'} width={200} height={200} alt="title" 
-                    className="rounded-full shadow-2xl shadow-black w-full" 
+                <Image src={ item.images[0].url } width={500} height={500} alt={ item.name } 
+                    className="rounded-full object-cover shadow-2xl shadow-black w-full h-full" 
                 />
 
                 {/* Renders when true */}
@@ -23,9 +26,9 @@ const ArtistCard: FC<ArtistCardProps> = ({ container, withPlayBtn }) => {
                 )}
             </div>
             <div className="space-y-1">
-                <a href="" className="font-bold text-white text-lg">
-                    Artist Name
-                </a>
+                <Link href={`/artist/${item.id}`} className="font-bold text-white text-lg">
+                    { item.name }
+                </Link>
                 <p className="text-swhite-subdued text-xs md:text-sm lg:text-base">
                     Artist
                 </p>
