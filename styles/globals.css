@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+.overflow-y-auto::-webkit-scrollbar {
+    @apply invisible
+}
+/* .overflow-y-auto {
+    scrollbar-width: 20px;
+    scrollbar-color: rgba(255, 255, 255, 0.411);
+}   */
 /* body {
     @apply min-h-[500px];
 } */
@@ -80,7 +87,7 @@ footer a {
     @apply hidden nth-[1]:block nth-[2]:block @cxs:nth-[3]:block @csm:nth-[4]:block @cmd:nth-[5]:block @clg:nth-[6]:block @cxl:nth-[7]:block @c2xl:nth-[8]:block @c3xl:nth-[9]:block
 }
 .top_card {
-    @apply relative min-h-[230px] h-full rounded col-span-2 text-white p-5 flex flex-col
+    @apply relative min-h-[230px] h-full rounded col-span-2 text-white px-5 pb-5 pt-10 flex flex-col
 }
 .grid-cols-slist > * {
     @apply flex items-center
