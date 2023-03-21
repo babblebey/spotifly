@@ -9,46 +9,52 @@ import { useEffect, useState } from "react";
 import useScroll, { scrollData } from "../../hooks/useScroll";
 import SongListItem from "../../components/SongListItem";
 import { getToken } from "next-auth/jwt";
-import { useSession } from "next-auth/react";
-import { GetUserResponse } from "../../types/spotify-api";
+import { useSession, signIn } from "next-auth/react";
+import { GetFollowedArtistsResponse, GetUserResponse } from "../../types/spotify-api";
 import Image from "next/image";
+import Loading from "../../components/Loading";
+
+import sampleData from "../../data/userData.json"
 
 interface UserProps {
-
+    userData: GetUserResponse;
+    followedArtistsData: GetFollowedArtistsResponse;
 }
 
 const User: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    const { id, display_name, images, followers } = data as GetUserResponse;
+    const { status } = useSession();
+    
+    // Loading Status
+    if (status === 'loading') {
+        return <Loading />
+    }
 
-    const initHeader = { displayTitle: false, bg: 'bg-transparent' }
-    const [header, setHeader] = useState(initHeader);
+    // Not LoggedIn Status
+    if (status === 'unauthenticated') {
+        signIn();
 
-    useEffect(() => {
-        useScroll({
-            element: document.querySelector('.page') as HTMLElement,
-            callback({ scrollTop }: scrollData) {
-                scrollTop > 250 ? setHeader({ displayTitle: true, bg: 'bg-sdark-el-base-highlight' }) : setHeader(initHeader)
-            }
-        })
-    }, [])
+        return <Loading />
+    }
+
+    const { userData, followedArtistsData }: UserProps = data
 
     console.log(data)
 
     return (
         <div>
             <Head>
-                <title>Spotifly - { display_name }</title>
+                <title>Spotifly - { userData.display_name }</title>
             </Head>
 
-            <PageHeader variant="title" title={ display_name } displayTitle={ header.displayTitle } className={ header.bg } />
+            <PageHeader variant="title" title={ userData.display_name } backgroundColor="#121212" />
 
             <main className="@container -mt-24">
                 {/* Top Section */}
                 <div className="content_max_w_x_padded bg-sdark-el-base-highlight bg-opacity-60 pb-10 pt-32">
                     <div className="flex flex-col h-full self-align-end space-y-2 space-x-0 @csm:space-y-0 @csm:space-x-6 @csm:flex-row @csm:items-end">
                         <div className="flex items-center justify-center h-52 w-52 mb-2 bg-sdark-el-base shadow-lg shadow-black rounded-full overflow-hidden">
-                            { (images.length > 0) ? (
-                                <Image src={images[0].url} width={400} height={400} alt={ display_name } className="object-contain" />
+                            { (userData.images.length > 0) ? (
+                                <Image src={userData.images[0].url} width={400} height={400} alt={ userData.display_name } className="object-contain" />
                             ) : (
                                 <>
                                     <UserIcon width={40} height={40} className="fill-swhite-subdued" />
@@ -60,10 +66,10 @@ const User: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSi
                                 Profile
                             </h2>
                             <h2 className="text-4xl @cxs:text-6xl @cmd:text-8xl font-black">
-                                { display_name }
+                                { userData.display_name }
                             </h2>
                             <p className="text-base">
-                                1 Public Playlist  Following
+                                1 Public Playlist { followedArtistsData.artists?.total } Following
                             </p>
                         </div>
                     </div>
@@ -111,7 +117,12 @@ const User: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSi
 
                 {/* Artists Section */}
                 <div className="content_max_w_x_padded mt-10">
-                    {/* <ArtistSection title="Following" items={[1,1,1,1]} hideOverflow /> */}
+                    <ArtistSection 
+                        title="Following" 
+                        items={ followedArtistsData.artists?.items } 
+                        showAll={{ link: followedArtistsData.artists?.total > 9, route: `/user/${userData.id}/following` }} 
+                        hideOverflow
+                    />
                 </div>
             </main>
 
@@ -127,15 +138,13 @@ export const getServerSideProps: GetServerSideProps = async ({ req, params }: Ge
     const token = await getToken({ req, secret })
     const headers = { 'Authorization': 'Bearer ' + token?.accessToken }
 
-    const response = await fetch(`https://api.spotify.com/v1/me`, { headers });
-    // const responses = await Promise.all([
-    //     // fetch(`https://api.spotify.com/v1/me`, { headers }),
-	//     fetch(`https://api.spotify.com/v1/me/top/tracks`, { headers }),
-	//     fetch(`https://api.spotify.com/v1/me/top/artists`, { headers })
-    // ])
+    const user = await fetch(`https://api.spotify.com/v1/me`, { headers });
+    const userData = await user.json();
 
-    const data = await response.json();
-    // const data = await Promise.all(responses.map(response => response.json()))
+    const followedArtists = await fetch(`https://api.spotify.com/v1/me/following?type=artist`, { headers });
+    const followedArtistsData = await followedArtists.json();
+
+    const data: UserProps = { userData, followedArtistsData };
 
     return {
         props: { data }
