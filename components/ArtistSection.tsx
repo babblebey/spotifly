@@ -1,12 +1,13 @@
 import { FC } from "react";
 import ArtistCard from "./ArtistCard";
 import Link from "next/link";
-import { Item as FollowedArtistItem } from "../types/spotify-api/GetFollowedArtistsResponse";
+import { Item as FollowedArtistsItem } from "../types/spotify-api/GetFollowedArtistsResponse";
+import { Artist as ArtistRelatedArtistsItem } from "../types/spotify-api/GetArtistRelatedArtistsResponse";
 
 interface ArtistSectionProps {
     title: string,
     subtitle?: string,
-    items: FollowedArtistItem[],
+    items: FollowedArtistsItem[] | ArtistRelatedArtistsItem[],
     hideOverflow?: boolean,
     showAll?: { link: boolean, route: string },
     withPlayBtn?: boolean
@@ -20,7 +21,7 @@ const ArtistSection: FC<ArtistSectionProps> = ({ title, subtitle, items, hideOve
             {/* Title Section */}
             <div className="flex items-center justify-between">
                 <div>
-                    <Link href={ showAll?.route || '' } className="block _title hover:underline">
+                    <Link href={ showAll?.route || '' } className={`block _title ${showAll && 'hover:underline'}`}>
                         { title }
                     </Link>
                     {subtitle && (

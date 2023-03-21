@@ -1,15 +1,16 @@
 import { FC } from "react";
 import PlaylistCard from "./PlaylistCard";
+import { Item as GetArtistAlbumsItem } from "../types/spotify-api/GetArtistAlbumsResponse";
 
 interface PlaylistSectionProps {
     title: string,
     subtitle?: string,
-    items?: any[],
+    items: GetArtistAlbumsItem[],
     hideOverflow?: boolean,
     showAll?: boolean,
     withPlayBtn?: boolean
 }
- 
+
 const PlaylistSection: FC<PlaylistSectionProps> = ({ title, subtitle, items, hideOverflow, showAll, withPlayBtn }) => {
     return ( 
         <div className="space-y-5 section @container/section">
@@ -34,8 +35,8 @@ const PlaylistSection: FC<PlaylistSectionProps> = ({ title, subtitle, items, hid
 
             {/* Playlist Items Section */}
             <div className={`items @container/section-items ${!hideOverflow && 'gap-y-6'}`}>
-                { items?.map((i, l) => (
-                    <PlaylistCard key={i} container={hideOverflow} withPlayBtn={withPlayBtn} />
+                { items?.map((item, i) => (
+                    <PlaylistCard key={i} item={ item } container={hideOverflow} withPlayBtn={withPlayBtn} />
                 )) }
             </div>
         </div>
