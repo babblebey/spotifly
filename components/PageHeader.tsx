@@ -2,6 +2,8 @@ import { FC, useEffect, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon, PlayIcon, SearchIcon, UserIcon, CarretIcon, CancelIcon } from "../icons";
 import { signIn, signOut, useSession } from "next-auth/react";
 import useScroll, { scrollData } from "../hooks/useScroll";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 interface PageHeaderProps {
     variant: 'home' | 'search' | 'library' | 'playlist' | 'title',
@@ -13,6 +15,7 @@ const PageHeader: FC<PageHeaderProps> = ({ variant, title, backgroundColor }) =>
     const { status, data } = useSession();    
     const isLoggedIn: boolean = status === 'authenticated';
     const [displayTitle, setDisplayTitle] = useState(false);
+    const { pathname } = useRouter();
 
     const session = useSession();
     
@@ -83,26 +86,13 @@ const PageHeader: FC<PageHeaderProps> = ({ variant, title, backgroundColor }) =>
             {isLoggedIn && libraryVariant && (
                 <div className={`${true && 'grow'}`}>
                     <ul className="flex items-center text-white font-bold text-sm">
-                        <li className="collection-list-item">
-                            <a href="">
-                                Playlists
-                            </a>
-                        </li>
-                        <li className="collection-list-item bg-[#333333]">
-                            <a href="">
-                                Podcasts
-                            </a>
-                        </li>
-                        <li className="collection-list-item">
-                            <a href="">
-                                Artists
-                            </a>
-                        </li>
-                        <li className="collection-list-item">
-                            <a href="">
-                                Albums
-                            </a>
-                        </li>
+                        { ['Playlists', 'Podcasts', 'Artists', 'Albums'].map((item, i) => (
+                            <li className={`collection-list-item ${ pathname.includes(item.toLowerCase()) && 'bg-[#333333]' }`}>
+                                <Link href={`/collection/${ item.toLowerCase() }`}>
+                                    { item }
+                                </Link>
+                            </li>
+                        )) }
                     </ul>
                 </div>
             )}
