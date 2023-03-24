@@ -8,53 +8,76 @@ import SongListItem from "../../components/SongListItem"
 import PlaylistSection from "../../components/PlaylistSection"
 import { PlayIcon, HeartOutlineIcon, ThreeDotsIcon } from "../../icons"
 import { getToken } from "next-auth/jwt"
-import { GetTrackResponse } from "../../types/spotify-api"
+import { GetAlbumResponse, GetArtistResponse, GetArtistTopTracksResponse, GetTrackResponse } from "../../types/spotify-api"
 import moment from "moment"
+import Loading from "../../components/Loading"
+import { useSession, signIn } from "next-auth/react"
+import { usePalette } from "react-palette"
 
 import sampleData from "../../data/trackData.json"
 
 interface TrackProps {
-
+    trackData: GetTrackResponse;
+    albumData: GetAlbumResponse;
+    artistData: GetArtistResponse;
+    topTracksData: GetArtistTopTracksResponse
 }
 
 const Track: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     console.log(data)
-    const { name, artists, album, duration_ms } = data as GetTrackResponse;
+    const { status } = useSession()
+    const { data: palette } = usePalette(data.trackData.album.images[0].url)
+       
+    // Loading Status
+    if (status === 'loading') {
+        return <Loading />
+    }
+    
+    // Not LoggedIn Status
+    if (status === 'unauthenticated') {
+        signIn();
+        
+        return <Loading />
+    }
+
+    const { trackData, albumData, artistData, topTracksData } = data as TrackProps;
 
     return (
         <div>
             <Head>
-                <title>Spotifly - { name }</title>
+                <title>Spotifly - { trackData.name }</title>
             </Head>
 
-            <PageHeader variant="playlist" title={ name } />
+            <PageHeader variant="playlist" title={ trackData.name } backgroundColor={ palette?.darkMuted } />
 
             <main className="@container -mt-24">
                 {/* Top Section */}
-                <div className="content_x_padded bg-[#402878] bg-opacity-60 pb-10 pt-32">
+                <div className="content_x_padded bg-opacity-60 pb-10 pt-32"
+                    style={{ backgroundColor: palette?.darkMuted }}
+                >
                     <div className="flex flex-col h-full self-align-end space-y-2 space-x-0 @csm:space-y-0 @csm:space-x-6 @csm:flex-row @csm:items-end">
                         <div className="w-fit @csm:w-72 shadow-lg shadow-black">
-                            <Image src={ album.images[0].url } width={280} height={280} className="object-contain" alt="title" />
+                            <Image src={ albumData.images[0].url } width={280} height={280} className="object-contain" alt="title" />
                         </div>
                         <div className="w-full text-white text-sm space-y-3">
                             <h2 className="font-bold uppercase text-xs">
                                 Song
                             </h2>
                             <h3 className="text-4xl @cxs:text-6xl @cmd:text-8xl font-black">
-                                { name }
+                                { trackData.name }
                             </h3>
                             <div className="text-sm text-white flex items-center space-x-1">
                                 <div className="flex items-center space-x-1">
-                                    <Image src={ album.images[0].url } width={25} height={25} alt="title" className="rounded-full" />
-                                    <p className="font-bold">{ artists[0].name }</p>
+                                    <Image src={ albumData.images[0].url } width={25} height={25} alt="title" className="rounded-full" />
+                                    <p className="font-bold">{ trackData.artists[0].name }</p>
                                 </div>
                                 <span>{'•'}</span> 
                                 <p>
-                                    { moment(album.release_date).format('YYYY') }
+                                    { moment(albumData.release_date).format('YYYY') }
                                 </p>
                                 <span>{'•'}</span> 
                                 <p>
-                                    { moment(duration_ms).format('mm:ss') }
+                                    { moment(trackData.duration_ms).format('mm:ss') }
                                 </p>
                             </div>
                         </div>
@@ -63,7 +86,9 @@ const Track: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerS
 
                 {/* Play Section */}
                 <div className="relative">
-                    <div className="absolute w-full h-52 bg-gradient-to-b from-[#402878] to-sdark-bass opacity-50 -z-10" />
+                    <div className="absolute w-full h-52 opacity-50 -z-10" 
+                        style={{ background: `linear-gradient(to bottom, ${ palette?.darkMuted }, #121212)` }}
+                    />
                     <div className="relative content_max_w_x_padded flex items-center space-x-7 py-6">
                         <button className="play_button bg-sgreen-100 h-14 w-14">
                             <PlayIcon width={28} height={28} />
@@ -81,12 +106,12 @@ const Track: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerS
                 <div className="content_max_w_x_padded">
                     <div className="p-2 flex items-center w--full space-x-4 rounded-md hover:bg-sdark-53 hover:bg-opacity-40">
                         <div className="rounded-full overflow-hidden">
-                            <Image src={'/ac1.jfif'} width={80} height={80} alt="title" />
+                            <Image src={ artistData.images[0].url } width={80} height={80} alt={ artistData.name } />
                         </div>
                         <div className="text-white font-bold space-y-1">
                             <p className="text-xs uppercase">Artist</p>
                             <a href="" className="hover:underline">
-                                { artists[0].name }
+                                { artistData.name }
                             </a>
                         </div>
                     </div>
@@ -99,15 +124,15 @@ const Track: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerS
                             <span className="text-sm text-swhite-subdued">
                                 Popular Tracks by
                             </span>
-                            <Link href={`/artists/${artists[0].id}`} className="_title block">
-                                { artists[0].name }
+                            <Link href={`/artists/${artistData.id}`} className="_title block">
+                                { artistData.name }
                             </Link>
                         </div>
 
                         <div>
-                            {/* { list.map((v, i) => (
-                                <SongListItem key={i} index={i + 1} variant="artist" />
-                            )) } */}
+                            { topTracksData.tracks.map((track, i) => (
+                                <SongListItem key={i} data={ track } index={i + 1} variant="artist" />
+                            )) }
                         </div>
                         
                         <a href="" className="text-swhite-subdued hover:text-white uppercase text-sm block font-bold">
@@ -118,36 +143,40 @@ const Track: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerS
 
                 {/* Related Playlist */}
                 <div className="content_max_w_x_padded mt-10 space-y-10">
-                    <PlaylistSection title={`Popular Releases by ${ artists[0].name }`} hideOverflow />
+                    {/* <PlaylistSection title={`Popular Releases by ${ artists[0].name }`} hideOverflow />
 
                     <PlaylistSection title={`Popular Albums by ${ artists[0].name }`} hideOverflow />
 
-                    <PlaylistSection title={`Popular Singles and EPs by ${ artists[0].name }`} hideOverflow />
+                    <PlaylistSection title={`Popular Singles and EPs by ${ artists[0].name }`} hideOverflow /> */}
                 </div>
 
                 <div className="content_max_w_x_padded mt-10">
                     <div className="flex items-center w-full space-x-4 rounded-tr-lg bg-sdark-el-base-highlight hover:bg-sdark-53 mb-[1px]">
                         <div className="rounded-tl-md overflow-hidden">
-                            <Image src={ album.images[0].url } width={80} height={80} alt="title" />
+                            <Image src={ albumData.images[1].url } width={80} height={80} alt="title" />
                         </div>
                         <div className="text-white space-y-1">
                             <p className="text-xs">From the album</p>
-                            <Link href={`/album/${album.id}`} className="font-bold hover:underline">
-                                { album.name }
+                            <Link href={`/album/${albumData.id}`} className="font-bold hover:underline">
+                                { albumData.name }
                             </Link>
                         </div>
                     </div>
 
                     <div>
-                        {/* { list.map((_, i) => (
-                            <SongListItem key={i} variant="album" index={i+1} />
-                        )) } */}
+                        { albumData.tracks.items.map((item, i) => (
+                            <SongListItem key={i} data={ item } variant="album" index={i+1} />
+                        )) }
                     </div>
                 </div>
 
+                {/* Copyrights */}
                 <div className="content_max_w_x_padded text-xs text-swhite-subdued mt-8 space-y-1">
-                    <p>© 2022 Groovie Gang Entertainment</p>
-                    <p>℗ 2022 Groovie Gang Entertainment</p>
+                    { albumData.copyrights?.map((copy, i) => (
+                        <p key={i}>
+                            { copy.type === 'P' ? '℗' : '©' } { copy.text }
+                        </p>
+                    )) } 
                 </div>
             </main>
 
@@ -162,15 +191,20 @@ export const getServerSideProps: GetServerSideProps = async ({ req, params }: Ge
     const secret = process.env.NEXTAUTH_SECRET as string;
     const token = await getToken({ req, secret })
     const headers = { 'Authorization': 'Bearer ' + token?.accessToken }
+    
+    // const track = await fetch(`https://api.spotify.com/v1/tracks/${params?.id}`, { headers });
+    // const trackData = await track.json() as GetTrackResponse;
+    
+    // const album = await fetch(trackData?.album.href, { headers });
+    // const albumData = await album.json();
+    
+    // const artist = await fetch(trackData?.artists[0].href, { headers });
+    // const artistData = await artist.json();
 
-    // const response = await fetch(`https://api.spotify.com/v1/tracks/${params?.id}`, { headers });
-    // const data = await response.json();
-
-    // const responses = await Promise.all([
-    //     fetch('https://jsonplaceholder.typicode.com/posts'),
-	//     fetch('https://jsonplaceholder.typicode.com/users')
-    // ])
-    // const data = await Promise.all(responses.map(response => response.json()))
+    // const topTracks = await fetch(`https://api.spotify.com/v1/artists/${trackData?.artists[0].id}/top-tracks?market=NG`, { headers });
+    // const topTracksData = await topTracks.json()
+    
+    // const data: TrackProps = { trackData, albumData, artistData, topTracksData }
 
     return {
         props: { data: sampleData }
