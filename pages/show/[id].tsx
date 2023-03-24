@@ -10,10 +10,28 @@ import moment from "moment";
 import parse from "html-react-parser"
 import { GetShowResponse } from "../../types/spotify-api";
 import Link from "next/link";
+import { useSession, signIn } from "next-auth/react";
+import Loading from "../../components/Loading";
 
 import sampleData from "../../data/showData.json";
+import { usePalette } from "react-palette";
 
 const Show: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    const { status } = useSession();
+    const { data: palette } = usePalette(data.images[0].url);
+    
+    // Loading Status
+    if (status === 'loading') {
+        return <Loading />
+    }
+    
+    // Not LoggedIn Status
+    if (status === 'unauthenticated') {
+        signIn();
+        
+        return <Loading />
+    }
+
     console.log(data)
 
     const { id, name, publisher, html_description, episodes, images } = data as GetShowResponse;
@@ -25,11 +43,13 @@ const Show: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSi
                 <title>Spotifly - { name }</title>
             </Head>  
 
-            <PageHeader variant="title" title={ name }/>
+            <PageHeader variant="title" title={ name } backgroundColor={ palette?.darkVibrant } />
 
             <main className="@container -mt-24">
                 {/* Top Section */}
-                <div className="content_x_padded bg-[#e00818] bg-opacity-60 pb-10 pt-32">
+                <div className="content_x_padded bg-opacity-60 pb-10 pt-32"
+                    style={{ backgroundColor: palette?.darkVibrant }}
+                >
                     <div className="flex flex-col h-full self-align-end space-y-2 space-x-0 @csm:space-y-0 @csm:space-x-6 @csm:flex-row @csm:items-end">
                         <div className="w-fit mb-2 @csm:mb-0 @csm:w-72 shadow-lg shadow-black rounded-2xl overflow-hidden">
                             <Image src={ images[0].url } width={280} height={280} className="object-contain" alt="title" />
@@ -50,7 +70,9 @@ const Show: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSi
 
                 {/* Follow Section */}
                 <div className="relative">
-                    <div className="absolute w-full h-60 bg-gradient-to-b from-[#e00818] to-sdark-base opacity-50 -z-10" />
+                    <div className="absolute w-full h-60 opacity-50 -z-10" 
+                        style={{ background: `linear-gradient(to bottom, ${ palette?.darkVibrant }, #121212)` }}
+                    />
                     <div className="content_max_w_x_padded flex items-center space-x-7 py-6">
                         <button className="border border-white text-white text-sm px-4 py-1 rounded font-bold uppercase">
                             Follow
