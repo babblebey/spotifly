@@ -1,22 +1,27 @@
 import { GetServerSideProps, GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from "next";
 import { getToken } from "next-auth/jwt";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import PageFooter from "../../components/PageFooter";
 import PageHeader from "../../components/PageHeader";
 import PlaylistCard from "../../components/PlaylistCard";
 import { PlayIcon } from "../../icons";
-import { GetCurrentUserPlaylistResponse } from "../../types/spotify-api";
+import { GetCurrentUserPlaylistResponse, GetUsersSavedTracksResponse } from "../../types/spotify-api";
 
 import sampleData from "../../data/navbarUserPlaylistData.json"
+import sampleDataT from "../../data/userTracksData.json"
 
 interface PlaylistsProps {
-    
+    playlistsData: GetCurrentUserPlaylistResponse;
+    tracksData: GetUsersSavedTracksResponse;
 }
 
 const Playlists: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => { 
+    const router = useRouter();
+
     console.log(data);
 
-    const { items } = data as GetCurrentUserPlaylistResponse;
+    const { playlistsData, tracksData }: PlaylistsProps = data;
 
     return (
         <div className="relative">
@@ -35,17 +40,32 @@ const Playlists: NextPage = ({ data }: InferGetServerSidePropsType<typeof getSer
                     </div>
 
                     <div className="items gap-y-6">
-                        {/* Top Card */}
-                        <div className="top_card group bg-gradient-to-br from-[#450af5] to-[#8e8ee5]">
+                        {/* Top Card - Lists Users Liked Songs  */}
+                        <div className="top_card group bg-gradient-to-br from-[#450af5] to-[#8e8ee5] cursor-pointer"
+                            onClick={() => router.push('/collection/tracks')}
+                        >
                             <div className="grow">
-
+                                <div className="line-clamp-3">
+                                    { tracksData.items.map((item, i) => (
+                                        <span key={i} className="font-medium text-white space-x-1">
+                                            <span>
+                                                { item.track.artists[0].name }
+                                            </span>
+                                            {' '}
+                                            <span className="opacity-70">
+                                                { item.track.name }
+                                            </span>
+                                            {' • '}
+                                        </span>
+                                    )) }
+                                </div>
                             </div>
                             <div className="space-y-2">
                                 <a href="" className="text-3xl font-black">
                                     Liked Songs
                                 </a>
                                 <p>
-                                    9 liked songs
+                                    { tracksData.total } liked songs
                                 </p>
                             </div>
                             <button className="play_button_hide_show bg-sgreen-100 h-12 w-12 m-4 shaodow-lg shadow-sdark-53">
@@ -54,7 +74,7 @@ const Playlists: NextPage = ({ data }: InferGetServerSidePropsType<typeof getSer
                         </div>
 
                         {/* List */}
-                        { items.map((item, i) => (
+                        { playlistsData.items.map((item, i) => (
                             <PlaylistCard key={i} item={ item } withPlayBtn />
                         )) }
                     </div>
@@ -73,10 +93,18 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     const token = await getToken({ req, secret });
     const headers = { 'Authorization': 'Bearer ' + token?.accessToken }
 
-    // const response = await fetch(`https://api.spotify.com/v1/me/playlists`, { headers });
-    // const data = await response.json()
+    // const playlists = await fetch(`https://api.spotify.com/v1/me/playlists`, { headers });
+    // const playlistsData = await playlists.json()
+
+    // const tracks = await fetch(`https://api.spotify.com/v1/me/tracks`, { headers });
+    // const tracksData = await tracks.json();
+
+    const data: PlaylistsProps = {
+        playlistsData: sampleData,
+        tracksData: sampleDataT,
+    }
 
     return {
-        props: { data: sampleData }
+        props: { data }
     }
 }
