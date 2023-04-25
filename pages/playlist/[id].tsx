@@ -1,33 +1,54 @@
 import { GetServerSideProps, NextPage, InferGetServerSidePropsType, GetServerSidePropsContext } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import Image from "next/image";
 import PageHeader from "../../components/PageHeader";
 import PageFooter from "../../components/PageFooter";
 import SongListItem from "../../components/SongListItem";
 import FormatNumber from "../../components/FormatNumber";
-import { PlayIcon, ThreeDotsIcon, TimerIcon, HeartOutlineIcon } from "../../icons";
+import { Item } from "../../types/spotify-api/GetPlaylistResponse";
 import { getToken } from "next-auth/jwt";
 import { GetPlaylistResponse } from "../../types/spotify-api";
-import { Item } from "../../types/spotify-api/GetPlaylistResponse";
+import { PlayIcon, ThreeDotsIcon, TimerIcon, HeartOutlineIcon } from "../../icons";
+import Loading from "../../components/Loading";
+import { useSession, signIn } from "next-auth/react";
+import { usePalette } from "react-palette";
 
 import sampleData from "../../data/playlistData.json";
 
 const Playlist: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    const { id, name, description, images, followers, owner, tracks }: GetPlaylistResponse = data;
+    const { status } = useSession();
+    const { data: palette } = usePalette(data.images[0].url)
+    
+    // Loading Status
+    if (status === 'loading') {
+        return <Loading />
+    }
+    
+    // Not LoggedIn Status
+    if (status === 'unauthenticated') {
+        signIn();
+        
+        return <Loading />
+    }
+
+    const { id, name, description, images, followers, owner, tracks } = data as GetPlaylistResponse;
 
     console.log(data);
 
     return (
         <div>
             <Head>
-                <title>Spotifly - Playlist title</title>
+                <title>Spotifly - { name }</title>
             </Head>
 
-            <PageHeader variant="playlist" className="bg-transparent" />
+            <PageHeader variant="playlist" title={ name } backgroundColor={palette?.darkMuted} />
 
             <main className="@container -mt-24">
                 {/* Top Section */}
-                <div className="content_x_padded bg-[#605060] bg-opacity-60 pb-10 pt-32">
+                <div className="content_x_padded bg-opacity-60 pb-10 pt-32"
+                    style={{ backgroundColor: palette?.darkMuted }}
+                >
                     <div className="flex flex-col h-full self-align-end space-y-2 space-x-0 @csm:space-y-0 @csm:space-x-6 @csm:flex-row @csm:items-end">
                         <div className="w-fit @csm:w-72 shadow-lg shadow-black">
                             <Image src={ images[0]?.url } width={280} height={280} className="object-contain" alt="title" />
@@ -42,26 +63,26 @@ const Playlist: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServ
                             <p>
                                 { description }
                             </p>
-                            <p className="space-x-2">
-                                <span className="font-bold hover:underline">
-                                    <a href="">
-                                        { owner.display_name }
-                                    </a>
-                                </span>
+                            <div className="flex space-x-2">
+                                <Link href={`/artist/${ owner.id }`} className="font-bold hover:underline">
+                                    { owner.display_name }
+                                </Link>
                                 <span>
                                     <FormatNumber value={ followers.total } />
                                 </span>
                                 <span>
                                     { tracks.total } Songs
                                 </span>
-                            </p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 {/* Play Section */}
                 <div className="relative">
-                    <div className="absolute w-full h-52 bg-gradient-to-b from-[#605060] to-sdark-base opacity-50 -z-10" />
+                    <div className="absolute w-full h-52 opacity-50 -z-10" 
+                        style={{ background: `linear-gradient(to bottom, ${ palette?.darkMuted }, #121212)` }}
+                    />
                     <div className="relative content_max_w_x_padded flex items-center space-x-7 py-6">
                         <button className="play_button bg-sgreen-100 h-14 w-14">
                             <PlayIcon width={28} height={28} />
@@ -117,12 +138,9 @@ export default Playlist
 export const getServerSideProps: GetServerSideProps = async ({ req, params }: GetServerSidePropsContext) => {
     const secret = process.env.NEXTAUTH_SECRET as string;
     const token = await getToken({ req, secret })
+    const headers = { 'Authorization': "Bearer " + token?.accessToken }
 
-    // const response = await fetch(`https://api.spotify.com/v1/playlists/${params?.id}`, {
-    //     headers: {
-    //         'Authorization': "Bearer " + token?.accessToken
-    //     }
-    // });
+    // const response = await fetch(`https://api.spotify.com/v1/playlists/${params?.id}`, { headers });
     // const data = await response.json();
 
     return {
