@@ -9,11 +9,27 @@ import moment from "moment";
 import { ThreeDotsIcon, PlayIcon, PlusCircleIcon } from "../../icons";
 import { getToken } from "next-auth/jwt";
 import { GetEpisodeResponse } from "../../types/spotify-api";
+import { useSession, signIn } from "next-auth/react";
 
 import sampleData from "../../data/episodeData.json"
+import Loading from "../../components/Loading";
 
 const Episode: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    const { status } = useSession()
+    
     console.log(data)
+  
+    // Loading Status
+    if (status === 'loading') {
+        return <Loading />
+    }
+    
+    // Not LoggedIn Status
+    if (status === 'unauthenticated') {
+        signIn();
+        
+        return <Loading />
+    }
 
     const { id, name, html_description, images, release_date, duration_ms, show } = data as GetEpisodeResponse;
 
